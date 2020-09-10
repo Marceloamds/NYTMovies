@@ -1,0 +1,2 @@
+rootProject.name='NYT Movies'
+include ':app'
