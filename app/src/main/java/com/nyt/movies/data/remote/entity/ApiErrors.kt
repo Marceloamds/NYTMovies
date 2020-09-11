@@ -5,8 +5,6 @@ import java.io.Serializable
 import java.util.*
 
 data class ApiErrors(
-    @SerializedName("message")
-    val errorMessage: String?,
-    @SerializedName("errors")
-    val errors: ArrayList<String>?
+    @SerializedName("message") val errorMessage: String?,
+    @SerializedName("errors") val errors: ArrayList<String>?
 ) : Serializable

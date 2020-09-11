@@ -30,6 +30,10 @@ android {
         }
     }
 
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
+    }
 }
 
 dependencies {
@@ -39,7 +43,7 @@ dependencies {
     // Retrofit
     implementation "com.squareup.retrofit2:retrofit:$retrofitVersion"
     api "com.squareup.retrofit2:converter-gson:$retrofitVersion"
-    api 'com.squareup.okhttp3:logging-interceptor:4.3.1'
+    api 'com.squareup.okhttp3:logging-interceptor:4.8.1'
 
     // AndroidX
     implementation 'androidx.appcompat:appcompat:1.2.0'
@@ -64,6 +68,10 @@ dependencies {
     kapt "androidx.room:room-compiler:$roomVersion"
     api "androidx.room:room-runtime:$roomVersion"
     implementation "androidx.room:room-ktx:$roomVersion"
+
+    // Glide
+    implementation "com.github.bumptech.glide:glide:$glideVersion"
+    kapt "com.github.bumptech.glide:compiler:$glideVersion"
 
     // Tests
     testImplementation 'junit:junit:4.13'

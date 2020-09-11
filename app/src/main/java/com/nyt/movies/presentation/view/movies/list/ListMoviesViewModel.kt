@@ -2,8 +2,8 @@ package com.nyt.movies.presentation.view.movies.list
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.nyt.movies.domain.entity.currency.Currency
-import com.nyt.movies.domain.entity.currency.CurrencyList
+import com.nyt.movies.domain.entity.movie.Movie
+import com.nyt.movies.domain.entity.movie.MoviesList
 import com.nyt.movies.domain.interactor.GetMoviesList
 import com.nyt.movies.domain.util.resource.Strings
 import com.nyt.movies.presentation.util.base.BaseViewModel
@@ -11,46 +11,44 @@ import com.nyt.movies.presentation.util.dialog.DialogData
 import com.nyt.movies.presentation.view.movies.MovieFilterType
 
 class ListMoviesViewModel constructor(
-    private val getCurrencyList: GetMoviesList,
+    private val getMoviesList: GetMoviesList,
     private val strings: Strings
 ) : BaseViewModel() {
 
-    val currencyList: LiveData<List<Currency>> get() = _currencyList
-    private val _currencyList by lazy { MutableLiveData<List<Currency>>() }
+    val moviesList: LiveData<List<Movie>> get() = _moviesList
+    private val _moviesList by lazy { MutableLiveData<List<Movie>>() }
 
     var queryFilterType: MovieFilterType = MovieFilterType.FilterByName
-    private var fullCurrencyList: CurrencyList? = null
+    private var fullMoviesList: MoviesList? = null
 
     init {
-        getCurrencyList()
+        getMoviesList()
     }
 
     fun onQueryChanged(query: String) {
-        _currencyList.value = fullCurrencyList?.currencies?.filter {
+        _moviesList.value = fullMoviesList?.movies?.filter {
             when (queryFilterType) {
-                is MovieFilterType.FilterByName -> it.name.contains(query, true)
-                is MovieFilterType.FilterByCode -> it.code.contains(query, true)
+                is MovieFilterType.FilterByName -> it.displayTitle.contains(query, true)
             }
         }
     }
 
     fun filterFullList(currencyFilterType: MovieFilterType) {
-        _currencyList.value = fullCurrencyList?.currencies?.sortedBy {
+        _moviesList.value = fullMoviesList?.movies?.sortedBy {
             when (currencyFilterType) {
-                is MovieFilterType.FilterByName -> it.name
-                is MovieFilterType.FilterByCode -> it.code
+                is MovieFilterType.FilterByName -> it.displayTitle
             }
         }
     }
 
-    private fun getCurrencyList() {
+    private fun getMoviesList() {
         launchDataLoad(onFailure = ::onFailure) {
-            val currencyList = getCurrencyList.execute()
-            if (currencyList?.success == false) {
+            val currencyList = getMoviesList.execute()
+            if (currencyList?.status != "OK") {
                 showCurrencyListErrorDialog()
             } else {
-                fullCurrencyList = currencyList
-                _currencyList.value = fullCurrencyList?.currencies
+                fullMoviesList = currencyList
+                _moviesList.value = fullMoviesList?.movies
             }
         }
     }
@@ -68,6 +66,6 @@ class ListMoviesViewModel constructor(
     }
 
     private fun onFailure(throwable: Throwable) {
-        setDialog(throwable, ::getCurrencyList)
+        setDialog(throwable, ::getMoviesList)
     }
 }

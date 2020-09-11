@@ -6,7 +6,6 @@ import android.view.MenuItem
 import androidx.appcompat.app.AppCompatActivity
 import com.nyt.movies.presentation.util.dialog.DialogData
 import com.nyt.movies.presentation.util.extension.consume
-import com.nyt.movies.presentation.util.extension.observe
 import com.nyt.movies.presentation.util.extension.showDialog
 import com.nyt.movies.presentation.util.navigation.NavData
 

@@ -13,7 +13,7 @@
             android:layout_height="match_parent"
             app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
             tools:itemCount="50"
-            tools:listitem="@layout/item_currency" />
+            tools:listitem="@layout/item_movie" />
 
         <com.nyt.movies.presentation.util.placeholder.PlaceholderView
             android:id="@+id/placeholder_view"

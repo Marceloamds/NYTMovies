@@ -4,18 +4,26 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.nyt.movies.R
-import com.nyt.movies.databinding.ItemCurrencyBinding
-import com.nyt.movies.domain.entity.currency.Currency
+import com.nyt.movies.databinding.ItemMovieBinding
+import com.nyt.movies.domain.entity.movie.Movie
 
 class MovieViewHolder(
-    private var binding: ItemCurrencyBinding
+    private var binding: ItemMovieBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun setupBinding(item: Currency, callback: (Currency) -> Unit) {
+    fun setupBinding(movie: Movie, callback: (Movie) -> Unit) {
         with(binding) {
-            textViewCurrencyName.text = item.getFormattedString(root.context)
-            root.setOnClickListener { callback(item) }
+            root.setOnClickListener { callback(movie) }
+            val requestOptions = RequestOptions()
+            requestOptions.centerCrop()
+            Glide.with(root.context)
+                .load(movie.multimedia.src)
+                .apply(requestOptions)
+                .into(imageViewMoviePoster)
+            textViewMovieTitle.text = movie.displayTitle
         }
     }
 
@@ -23,7 +31,7 @@ class MovieViewHolder(
         fun inflate(parent: ViewGroup?) = MovieViewHolder(
             DataBindingUtil.inflate(
                 LayoutInflater.from(parent?.context),
-                R.layout.item_currency,
+                R.layout.item_movie,
                 parent,
                 false
             )

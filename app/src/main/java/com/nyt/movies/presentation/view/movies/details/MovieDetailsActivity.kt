@@ -7,13 +7,10 @@ import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import com.nyt.movies.R
 import com.nyt.movies.databinding.ActivityConverterBinding
-import com.nyt.movies.domain.entity.currency.Conversion
-import com.nyt.movies.domain.entity.currency.Currency
+import com.nyt.movies.domain.entity.movie.Link
+import com.nyt.movies.domain.entity.movie.Movie
 import com.nyt.movies.presentation.util.base.BaseActivity
 import com.nyt.movies.presentation.util.base.BaseViewModel
-import com.nyt.movies.presentation.util.constants.TWO_DECIMAL_NUMBER
-import com.nyt.movies.presentation.util.extension.observe
-import com.nyt.movies.presentation.util.extension.onTextChanges
 import com.nyt.movies.presentation.util.extension.setSafeClickListener
 import com.nyt.movies.presentation.view.movies.list.ListMoviesActivity
 import com.nyt.movies.presentation.view.movies.list.ListMoviesActivity.Companion.CURRENCY_EXTRA
@@ -42,13 +39,11 @@ class MovieDetailsActivity : BaseActivity() {
         if (resultCode == Activity.RESULT_OK) {
             when (requestCode) {
                 ORIGIN_CURRENCY_CODE -> {
-                    val originCurrency = data?.getSerializableExtra(CURRENCY_EXTRA) as? Currency
-                    binding.originCurrencyText = originCurrency?.getFormattedString(this)
+                    val originCurrency = data?.getSerializableExtra(CURRENCY_EXTRA) as? Movie
                 }
                 DESTINATION_CURRENCY_CODE -> {
                     val destinationCurrency =
-                        data?.getSerializableExtra(CURRENCY_EXTRA) as? Currency
-                    binding.destinationCurrencyText = destinationCurrency?.getFormattedString(this)
+                        data?.getSerializableExtra(CURRENCY_EXTRA) as? Movie
                 }
             }
         }
@@ -57,13 +52,11 @@ class MovieDetailsActivity : BaseActivity() {
     private fun setupUi() {
         with(binding) {
             originCoinChooser.root.setSafeClickListener { chooseCurrency(ORIGIN_CURRENCY_CODE) }
-            originCurrencyText = getString(R.string.hint_origin_currency)
             destinationCoinChooser.root.setSafeClickListener {
                 chooseCurrency(
                     DESTINATION_CURRENCY_CODE
                 )
             }
-            destinationCurrencyText = getString(R.string.hint_destination_currency)
             buttonConvert.setSafeClickListener { }
         }
     }
@@ -75,13 +68,9 @@ class MovieDetailsActivity : BaseActivity() {
         )
     }
 
-    private fun onConversionReceived(conversion: Conversion?) {
-        conversion?.let {
-            with(binding) {
-                textViewConvertedValue.text = String.format(TWO_DECIMAL_NUMBER, it.convertedValue)
-                textViewOriginCurrency.text = it.originCurrency?.name ?: ""
-                textViewDestinationCurrency.text = it.destinationCurrency?.name ?: ""
-            }
+    private fun onConversionReceived(link: Link?) {
+        link?.let {
+            with(binding) {}
         }
     }
 

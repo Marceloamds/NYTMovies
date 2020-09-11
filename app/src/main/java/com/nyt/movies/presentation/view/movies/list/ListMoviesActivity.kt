@@ -10,10 +10,9 @@ import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import com.nyt.movies.R
 import com.nyt.movies.databinding.ActivityListCurrenciesBinding
-import com.nyt.movies.domain.entity.currency.Currency
+import com.nyt.movies.domain.entity.movie.Movie
 import com.nyt.movies.presentation.util.base.BaseActivity
 import com.nyt.movies.presentation.util.base.BaseViewModel
-import com.nyt.movies.presentation.util.extension.observe
 import com.nyt.movies.presentation.util.query.QueryChangesHelper
 import com.nyt.movies.presentation.view.movies.MovieFilterType
 import org.koin.android.viewmodel.ext.android.viewModel
@@ -30,13 +29,13 @@ class ListMoviesActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_list_currencies)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
-        supportActionBar?.title = getString(R.string.list_currency_title)
+        supportActionBar?.title = getString(R.string.search_for_movie)
         setupAdapter()
     }
 
     override fun subscribeUi() {
         super.subscribeUi()
-        _viewModel.currencyList.observe(this, ::onCurrencyListReceived)
+        _viewModel.moviesList.observe(this, ::onMoviesListReceived)
         _viewModel.placeholder.observe(this) { binding.placeholderView.setPlaceholder(it) }
     }
 
@@ -53,7 +52,6 @@ class ListMoviesActivity : BaseActivity() {
                 true
             }
             R.id.filter_by_code -> {
-                _viewModel.filterFullList(MovieFilterType.FilterByCode)
                 true
             }
             else -> super.onOptionsItemSelected(item)
@@ -61,12 +59,12 @@ class ListMoviesActivity : BaseActivity() {
     }
 
     private fun setupAdapter() {
-        adapter = ListMoviesAdapter(::onCurrencySelected)
+        adapter = ListMoviesAdapter(::onMovieSelected)
         binding.recyclerViewCurrencies.adapter = adapter
     }
 
-    private fun onCurrencyListReceived(currencyList: List<Currency>?) {
-        currencyList?.let(adapter::submitList)
+    private fun onMoviesListReceived(moviesList: List<Movie>?) {
+        moviesList?.let(adapter::submitList)
     }
 
     private fun setupSearchView(searchItem: MenuItem?) {
@@ -87,7 +85,6 @@ class ListMoviesActivity : BaseActivity() {
                     true
                 }
                 R.id.by_code -> {
-                    _viewModel.queryFilterType = MovieFilterType.FilterByCode
                     true
                 }
                 else -> {
@@ -98,11 +95,8 @@ class ListMoviesActivity : BaseActivity() {
         popUpMenu.show()
     }
 
-    private fun onCurrencySelected(currency: Currency) {
-        val intent = Intent()
-        intent.putExtra(CURRENCY_EXTRA, currency)
-        setResult(RESULT_OK, intent)
-        finish()
+    private fun onMovieSelected(movie: Movie) {
+        // goTo Movie Details
     }
 
     companion object {

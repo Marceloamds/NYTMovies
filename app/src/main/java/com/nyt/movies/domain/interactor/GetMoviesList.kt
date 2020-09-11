@@ -6,5 +6,5 @@ class GetMoviesList constructor(
     private val currencyRepository: CurrencyRepository
 ) {
 
-    suspend fun execute() = currencyRepository.getCurrencyList()
+    suspend fun execute() = currencyRepository.getMoviesList()
 }

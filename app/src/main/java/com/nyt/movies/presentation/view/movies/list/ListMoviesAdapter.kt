@@ -3,11 +3,11 @@ package com.nyt.movies.presentation.view.movies.list
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
-import com.nyt.movies.domain.entity.currency.Currency
+import com.nyt.movies.domain.entity.movie.Movie
 
 class ListMoviesAdapter(
-    private val callback: (Currency) -> Unit
-) : ListAdapter<Currency, MovieViewHolder>(DiffUtilCallback) {
+    private val callback: (Movie) -> Unit
+) : ListAdapter<Movie, MovieViewHolder>(DiffUtilCallback) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MovieViewHolder {
         return MovieViewHolder.inflate(parent)
@@ -17,11 +17,11 @@ class ListMoviesAdapter(
         holder.setupBinding(getItem(position), callback)
     }
 
-    companion object DiffUtilCallback : DiffUtil.ItemCallback<Currency>() {
-        override fun areItemsTheSame(oldItem: Currency, newItem: Currency) =
-            oldItem.code == newItem.code
+    companion object DiffUtilCallback : DiffUtil.ItemCallback<Movie>() {
+        override fun areItemsTheSame(oldItem: Movie, newItem: Movie) =
+            oldItem.displayTitle == newItem.displayTitle
 
-        override fun areContentsTheSame(oldItem: Currency, newItem: Currency) =
+        override fun areContentsTheSame(oldItem: Movie, newItem: Movie) =
             oldItem == newItem
     }
 }

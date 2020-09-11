@@ -10,9 +10,4 @@ fun databaseModule() = module {
         val converterDatabase = get() as MovieDatabase
         converterDatabase.currencyDao()
     }
-
-    single {
-        val converterDatabase = get() as MovieDatabase
-        converterDatabase.quoteDao()
-    }
 }

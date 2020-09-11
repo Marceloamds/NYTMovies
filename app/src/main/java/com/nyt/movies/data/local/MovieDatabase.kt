@@ -5,16 +5,13 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import com.nyt.movies.BuildConfig
-import com.nyt.movies.data.local.dao.CurrencyDao
-import com.nyt.movies.data.local.dao.QuoteDao
-import com.nyt.movies.data.local.entity.DbCurrency
-import com.nyt.movies.data.local.entity.DbQuote
+import com.nyt.movies.data.local.dao.MovieDao
+import com.nyt.movies.data.local.entity.DbMovie
 
-@Database(entities = [DbCurrency::class, DbQuote::class], version = 1, exportSchema = false)
+@Database(entities = [DbMovie::class], version = 1, exportSchema = false)
 abstract class MovieDatabase : RoomDatabase() {
 
-    abstract fun currencyDao(): CurrencyDao
-    abstract fun quoteDao(): QuoteDao
+    abstract fun currencyDao(): MovieDao
 
     companion object {
         fun build(context: Context): MovieDatabase {

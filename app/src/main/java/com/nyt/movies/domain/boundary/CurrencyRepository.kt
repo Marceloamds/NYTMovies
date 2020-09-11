@@ -1,8 +1,8 @@
 package com.nyt.movies.domain.boundary
 
-import com.nyt.movies.domain.entity.currency.CurrencyList
+import com.nyt.movies.domain.entity.movie.MoviesList
 
 interface CurrencyRepository {
 
-    suspend fun getCurrencyList(): CurrencyList?
+    suspend fun getMoviesList(): MoviesList?
 }
