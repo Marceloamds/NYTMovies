@@ -10,8 +10,8 @@ class DefaultMovieRepository constructor(
     private val currencyDao: MovieDao
 ) : CurrencyRepository {
 
-    override suspend fun getMoviesList(): MoviesList? {
-       return apiClient.getCurrencyList()?.toDomainObject()
+    override suspend fun getMoviesList(page: Int): MoviesList? {
+       return apiClient.getCurrencyList(page * MOVIES_PER_PAGE)?.toDomainObject()
     }
 
 //    private suspend fun getFromDatabase(e: Throwable): MoviesList? {
@@ -28,4 +28,8 @@ class DefaultMovieRepository constructor(
 //            currencyDao.insertCurrencies(movies.map { DbCurrency.fromDomainObject(it) })
 //        }
 //    }
+
+    companion object {
+        private const val MOVIES_PER_PAGE = 20
+    }
 }

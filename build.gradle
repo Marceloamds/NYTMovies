@@ -7,7 +7,7 @@ buildscript {
         retrofitVersion = '2.9.0'
         koinVersion = '2.0.1'
         roomVersion = '2.2.5'
-        glideVersion = '4.4.0'
+        glideVersion = '4.11.0'
     }
 
     repositories {

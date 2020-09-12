@@ -8,9 +8,11 @@ import android.view.MenuItem
 import androidx.appcompat.widget.PopupMenu
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.nyt.movies.R
-import com.nyt.movies.databinding.ActivityListCurrenciesBinding
+import com.nyt.movies.databinding.ActivityListMoviesBinding
 import com.nyt.movies.domain.entity.movie.Movie
+import com.nyt.movies.domain.entity.movie.MoviesList
 import com.nyt.movies.presentation.util.base.BaseActivity
 import com.nyt.movies.presentation.util.base.BaseViewModel
 import com.nyt.movies.presentation.util.query.QueryChangesHelper
@@ -22,15 +24,15 @@ class ListMoviesActivity : BaseActivity() {
     override val baseViewModel: BaseViewModel get() = _viewModel
     private val _viewModel: ListMoviesViewModel by viewModel()
 
-    private lateinit var binding: ActivityListCurrenciesBinding
+    private lateinit var binding: ActivityListMoviesBinding
     private lateinit var adapter: ListMoviesAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_list_currencies)
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_list_movies)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(R.string.search_for_movie)
-        setupAdapter()
+        setupRecyclerView()
     }
 
     override fun subscribeUi() {
@@ -58,13 +60,19 @@ class ListMoviesActivity : BaseActivity() {
         }
     }
 
-    private fun setupAdapter() {
-        adapter = ListMoviesAdapter(::onMovieSelected)
-        binding.recyclerViewCurrencies.adapter = adapter
+    private fun setupRecyclerView() {
+        adapter = ListMoviesAdapter(::onMovieSelected, _viewModel::onProgressItemShown)
+        with(binding) {
+            recyclerViewMovies.layoutManager = LinearLayoutManager(this@ListMoviesActivity)
+            recyclerViewMovies.adapter = adapter
+        }
     }
 
-    private fun onMoviesListReceived(moviesList: List<Movie>?) {
-        moviesList?.let(adapter::submitList)
+    private fun onMoviesListReceived(moviesList: MoviesList?) {
+        moviesList?.let {
+            adapter.submitList(moviesList.movies)
+            adapter.setProgressVisible(it.hasMore)
+        }
     }
 
     private fun setupSearchView(searchItem: MenuItem?) {

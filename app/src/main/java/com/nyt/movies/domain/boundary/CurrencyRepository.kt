@@ -4,5 +4,5 @@ import com.nyt.movies.domain.entity.movie.MoviesList
 
 interface CurrencyRepository {
 
-    suspend fun getMoviesList(): MoviesList?
+    suspend fun getMoviesList(page: Int): MoviesList?
 }

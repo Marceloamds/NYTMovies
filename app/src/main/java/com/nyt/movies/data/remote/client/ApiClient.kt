@@ -7,7 +7,7 @@ class ApiClient constructor(
     private val apiService: ApiService
 ) : RequestHandler() {
 
-    suspend fun getCurrencyList(): ApiMoviesList? {
-        return makeRequest(apiService.getCurrencyList())
+    suspend fun getCurrencyList(offset: Int): ApiMoviesList? {
+        return makeRequest(apiService.getCurrencyList(offset))
     }
 }

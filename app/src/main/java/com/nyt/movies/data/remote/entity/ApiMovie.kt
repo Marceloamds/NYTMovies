@@ -15,7 +15,7 @@ data class ApiMovie(
     @SerializedName("opening_date") val openingDate: Date?,
     @SerializedName("date_updated") val dateUpdated: Date,
     @SerializedName("link") val link: ApiLink,
-    @SerializedName("multimedia") val multimedia: ApiMultimedia
+    @SerializedName("multimedia") val multimedia: ApiMultimedia?
 ) {
 
     fun toDomainObject() = Movie(
@@ -26,6 +26,6 @@ data class ApiMovie(
         publicationDate = publicationDate,
         openingDate = openingDate,
         link = link.toDomainObject(),
-        multimedia = multimedia.toDomainObject()
+        multimedia = multimedia?.toDomainObject()
     )
 }

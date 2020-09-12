@@ -20,7 +20,7 @@ class MovieViewHolder(
             val requestOptions = RequestOptions()
             requestOptions.centerCrop()
             Glide.with(root.context)
-                .load(movie.multimedia.src)
+                .load(movie.multimedia?.src)
                 .apply(requestOptions)
                 .into(imageViewMoviePoster)
             textViewMovieTitle.text = movie.displayTitle

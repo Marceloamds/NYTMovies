@@ -47,7 +47,7 @@ abstract class BaseViewModel : ViewModel(), KoinComponent {
     }
 
     protected fun launchDataLoad(
-        shouldLoad: Boolean = true,
+        shouldLoad: Boolean = false,
         onFailure: (Throwable) -> Unit = ::onFailure,
         block: suspend () -> Unit
     ): Job {

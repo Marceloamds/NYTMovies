@@ -11,5 +11,5 @@ data class Movie(
     val publicationDate: Date,
     val openingDate: Date?,
     val link: Link,
-    val multimedia: Multimedia
+    val multimedia: Multimedia?
 ) : Serializable

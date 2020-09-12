@@ -63,6 +63,7 @@ dependencies {
     implementation "org.koin:koin-android:$koinVersion"
     implementation "org.koin:koin-android-scope:$koinVersion"
     implementation "org.koin:koin-android-viewmodel:$koinVersion"
+    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
 
     // Room
     kapt "androidx.room:room-compiler:$roomVersion"
