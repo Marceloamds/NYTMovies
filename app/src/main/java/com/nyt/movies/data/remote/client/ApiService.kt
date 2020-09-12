@@ -11,4 +11,9 @@ interface ApiService {
     suspend fun getCurrencyList(
         @Query("offset") offset: Int
     ): Response<ApiMoviesList>
+
+    @GET("reviews/search.json")
+    suspend fun searchMovies(
+        @Query("name") name: String
+    ): Response<ApiMoviesList>
 }

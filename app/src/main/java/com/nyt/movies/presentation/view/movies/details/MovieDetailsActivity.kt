@@ -24,6 +24,7 @@ class MovieDetailsActivity : BaseActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_movies_details)
         setupUi()
     }
@@ -40,9 +41,8 @@ class MovieDetailsActivity : BaseActivity() {
                 movie.publicationDate.format()
             )
             textViewOpeningDate.text = movie.openingDate?.format()
-            buttonGoToReview.setOnClickListener {
-                movie.link.url?.let { openBrowser(it) }
-            }
+            buttonGoToReview.setOnClickListener { movie.link.url?.let { openBrowser(it) } }
+            buttonGoBack.setOnClickListener { finish() }
         }
     }
 

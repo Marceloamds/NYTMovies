@@ -46,16 +46,6 @@ class ListMoviesActivity : BaseActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        return when (item.itemId) {
-            R.id.filter_by_name -> {
-                _viewModel.filterFullList(MovieFilterType.FilterByName)
-                true
-            }
-            else -> super.onOptionsItemSelected(item)
-        }
-    }
-
     private fun setupRecyclerView() {
         adapter = ListMoviesAdapter(_viewModel::onMovieSelected, _viewModel::onProgressItemShown)
         with(binding) {
@@ -81,13 +71,8 @@ class ListMoviesActivity : BaseActivity() {
 
     private fun showQueryPopUpMenu(searchView: SearchView) {
         val popUpMenu = PopupMenu(this, searchView)
-        popUpMenu.inflate(R.menu.filter_currency_menu)
         popUpMenu.setOnMenuItemClickListener {
             when (it.itemId) {
-                R.id.by_name -> {
-                    _viewModel.queryFilterType = MovieFilterType.FilterByName
-                    true
-                }
                 else -> {
                     false
                 }
