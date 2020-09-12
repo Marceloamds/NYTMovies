@@ -2,12 +2,14 @@ package com.nyt.movies.presentation.view.movies.list
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.nyt.movies.domain.entity.movie.Movie
 import com.nyt.movies.domain.entity.movie.MoviesList
 import com.nyt.movies.domain.interactor.GetMoviesList
 import com.nyt.movies.domain.util.resource.Strings
 import com.nyt.movies.presentation.util.base.BaseViewModel
 import com.nyt.movies.presentation.util.dialog.DialogData
 import com.nyt.movies.presentation.view.movies.MovieFilterType
+import com.nyt.movies.presentation.view.movies.details.MovieDetailsNavData
 
 class ListMoviesViewModel constructor(
     private val getMoviesList: GetMoviesList,
@@ -33,6 +35,10 @@ class ListMoviesViewModel constructor(
 
     fun filterFullList(movieFilterType: MovieFilterType) {
 
+    }
+
+    fun onMovieSelected(movie: Movie) {
+        goTo(MovieDetailsNavData(movie))
     }
 
     fun onProgressItemShown() {

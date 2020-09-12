@@ -11,8 +11,8 @@ class MovieDetailsViewModel constructor(
     private fun showEmptyCurrenciesDialog() {
         setDialog(
             DialogData.confirm(
-                strings.emptyFieldsErrorTitle,
-                strings.emptyCurrenciesError,
+                strings.globalOk,
+                strings.globalOk,
                 { /* Do Nothing */ },
                 strings.globalOk,
                 true

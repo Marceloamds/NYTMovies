@@ -11,7 +11,6 @@ import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nyt.movies.R
 import com.nyt.movies.databinding.ActivityListMoviesBinding
-import com.nyt.movies.domain.entity.movie.Movie
 import com.nyt.movies.domain.entity.movie.MoviesList
 import com.nyt.movies.presentation.util.base.BaseActivity
 import com.nyt.movies.presentation.util.base.BaseViewModel
@@ -42,7 +41,7 @@ class ListMoviesActivity : BaseActivity() {
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.list_currencies_menu, menu)
+        menuInflater.inflate(R.menu.list_movies_menu, menu)
         setupSearchView(menu?.findItem(R.id.action_search))
         return super.onCreateOptionsMenu(menu)
     }
@@ -53,15 +52,12 @@ class ListMoviesActivity : BaseActivity() {
                 _viewModel.filterFullList(MovieFilterType.FilterByName)
                 true
             }
-            R.id.filter_by_code -> {
-                true
-            }
             else -> super.onOptionsItemSelected(item)
         }
     }
 
     private fun setupRecyclerView() {
-        adapter = ListMoviesAdapter(::onMovieSelected, _viewModel::onProgressItemShown)
+        adapter = ListMoviesAdapter(_viewModel::onMovieSelected, _viewModel::onProgressItemShown)
         with(binding) {
             recyclerViewMovies.layoutManager = LinearLayoutManager(this@ListMoviesActivity)
             recyclerViewMovies.adapter = adapter
@@ -92,19 +88,12 @@ class ListMoviesActivity : BaseActivity() {
                     _viewModel.queryFilterType = MovieFilterType.FilterByName
                     true
                 }
-                R.id.by_code -> {
-                    true
-                }
                 else -> {
                     false
                 }
             }
         }
         popUpMenu.show()
-    }
-
-    private fun onMovieSelected(movie: Movie) {
-        // goTo Movie Details
     }
 
     companion object {
