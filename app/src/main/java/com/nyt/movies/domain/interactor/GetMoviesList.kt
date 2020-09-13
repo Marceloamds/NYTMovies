@@ -6,5 +6,5 @@ class GetMoviesList constructor(
     private val movieRepository: MovieRepository
 ) {
 
-    suspend fun execute(page: Int) = movieRepository.getMoviesList(page)
+    suspend fun execute(page: Int, query: String) = movieRepository.getMoviesList(page, query)
 }

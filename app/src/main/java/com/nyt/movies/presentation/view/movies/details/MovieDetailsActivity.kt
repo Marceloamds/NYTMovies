@@ -5,12 +5,14 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
 import com.bumptech.glide.Glide
+import com.bumptech.glide.request.RequestOptions
 import com.nyt.movies.R
 import com.nyt.movies.databinding.ActivityMoviesDetailsBinding
 import com.nyt.movies.domain.entity.movie.Movie
 import com.nyt.movies.presentation.util.base.BaseActivity
 import com.nyt.movies.presentation.util.base.BaseViewModel
 import com.nyt.movies.presentation.util.extension.format
+import com.nyt.movies.presentation.util.extension.load
 import com.nyt.movies.presentation.util.extension.openBrowser
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -26,11 +28,11 @@ class MovieDetailsActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_movies_details)
+        setupImage()
         setupUi()
     }
 
     private fun setupUi() {
-        Glide.with(this).load(movie.multimedia?.src).into(binding.imageViewMoviePoster)
         with(binding) {
             textViewMovieTitle.text = movie.displayTitle
             textViewSynopsis.text = movie.summaryShort
@@ -44,6 +46,10 @@ class MovieDetailsActivity : BaseActivity() {
             buttonGoToReview.setOnClickListener { movie.link.url?.let { openBrowser(it) } }
             buttonGoBack.setOnClickListener { finish() }
         }
+    }
+
+    private fun setupImage(){
+        binding.imageViewMoviePoster.load(movie.multimedia?.src)
     }
 
     companion object {

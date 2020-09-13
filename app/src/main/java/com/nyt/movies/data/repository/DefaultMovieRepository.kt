@@ -10,12 +10,8 @@ class DefaultMovieRepository constructor(
     private val movieDao: MovieDao
 ) : MovieRepository {
 
-    override suspend fun getMoviesList(page: Int): MoviesList? {
-       return apiClient.getMoviesList(page * MOVIES_PER_PAGE)?.toDomainObject()
-    }
-
-    override suspend fun searchMovies(name: String): MoviesList?{
-        return apiClient.searchMovies(name)?.toDomainObject()
+    override suspend fun getMoviesList(page: Int, query: String): MoviesList? {
+        return apiClient.getMoviesList(page * MOVIES_PER_PAGE, query)?.toDomainObject()
     }
 
 //    private suspend fun getFromDatabase(e: Throwable): MoviesList? {

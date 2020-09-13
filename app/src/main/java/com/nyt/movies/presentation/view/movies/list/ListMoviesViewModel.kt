@@ -8,7 +8,7 @@ import com.nyt.movies.domain.interactor.GetMoviesList
 import com.nyt.movies.domain.util.resource.Strings
 import com.nyt.movies.presentation.util.base.BaseViewModel
 import com.nyt.movies.presentation.util.dialog.DialogData
-import com.nyt.movies.presentation.view.movies.MovieFilterType
+import com.nyt.movies.presentation.util.extension.adding
 import com.nyt.movies.presentation.view.movies.details.MovieDetailsNavData
 
 class ListMoviesViewModel constructor(
@@ -16,25 +16,33 @@ class ListMoviesViewModel constructor(
     private val strings: Strings
 ) : BaseViewModel() {
 
-    val moviesList: LiveData<MoviesList> get() = _moviesList
+    val moviesList: LiveData<List<Movie>> get() = _moviesList
+    val progressVisible: LiveData<Boolean> get() = _progressVisible
+    val resetList: LiveData<Boolean> get() = _resetList
 
-    private val _moviesList by lazy { MutableLiveData<MoviesList>() }
+    private val _moviesList by lazy { MutableLiveData<List<Movie>>() }
+    private val _progressVisible by lazy { MutableLiveData<Boolean>() }
+    private val _resetList by lazy { MutableLiveData<Boolean>() }
 
-    var queryFilterType: MovieFilterType = MovieFilterType.FilterByName
-    private var fullMoviesList: MoviesList? = null
+    private var fullMoviesList: List<Movie>? = listOf()
 
     private var currentPage: Int = 0
+    private var currentQuery = ""
 
     init {
-        requestNewMovies(true)
+        requestNewMovies()
     }
 
     fun onQueryChanged(query: String) {
-
+        currentQuery = query
+        fullMoviesList = listOf()
+        requestNewMovies()
     }
 
-    fun filterFullList(movieFilterType: MovieFilterType) {
-
+    fun onQueryClosed() {
+        currentQuery = ""
+        fullMoviesList = listOf()
+        requestNewMovies()
     }
 
     fun onMovieSelected(movie: Movie) {
@@ -46,15 +54,21 @@ class ListMoviesViewModel constructor(
         requestNewMovies(false)
     }
 
-    private fun requestNewMovies(showPlaceholder: Boolean) {
+    private fun requestNewMovies(showPlaceholder: Boolean = true) {
         launchDataLoad(showPlaceholder, onFailure = ::onFailure) {
-            val moviesList = getMoviesList.execute(currentPage)
-            if (moviesList?.status != "OK") {
-                showCurrencyListErrorDialog()
-            } else {
-                fullMoviesList = moviesList
-                _moviesList.value = moviesList
-            }
+            val moviesList = getMoviesList.execute(currentPage, currentQuery)
+            fullMoviesList = fullMoviesList?.adding(moviesList?.movies)
+            setMoviesList(moviesList)
+            _resetList.value = showPlaceholder
+        }
+    }
+
+    private fun setMoviesList(moviesList: MoviesList?) {
+        if (moviesList?.status != "OK") {
+            showCurrencyListErrorDialog()
+        } else {
+            _progressVisible.value = moviesList.hasMore
+            _moviesList.value = fullMoviesList
         }
     }
 

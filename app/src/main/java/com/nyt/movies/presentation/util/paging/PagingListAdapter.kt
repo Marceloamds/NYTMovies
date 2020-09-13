@@ -39,11 +39,6 @@ abstract class PagingListAdapter<T, ViewHolder : RecyclerView.ViewHolder>(
         return getProgressSubItemViewType(position)
     }
 
-    override fun submitList(list: List<T>?) {
-        currentMoviesList = currentMoviesList.adding(list)
-        super.submitList(currentMoviesList)
-    }
-
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
         if (holder is ProgressViewHolder) {
             onProgressShownCallback.invoke()

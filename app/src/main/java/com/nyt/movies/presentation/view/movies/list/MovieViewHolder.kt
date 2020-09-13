@@ -9,6 +9,7 @@ import com.bumptech.glide.request.RequestOptions
 import com.nyt.movies.R
 import com.nyt.movies.databinding.ItemMovieBinding
 import com.nyt.movies.domain.entity.movie.Movie
+import com.nyt.movies.presentation.util.extension.load
 
 class MovieViewHolder(
     private var binding: ItemMovieBinding
@@ -17,12 +18,7 @@ class MovieViewHolder(
     fun setupBinding(movie: Movie, callback: (Movie) -> Unit) {
         with(binding) {
             root.setOnClickListener { callback(movie) }
-            val requestOptions = RequestOptions()
-            requestOptions.centerCrop()
-            Glide.with(root.context)
-                .load(movie.multimedia?.src)
-                .apply(requestOptions)
-                .into(imageViewMoviePoster)
+            imageViewMoviePoster.load(movie.multimedia?.src)
             textViewMovieTitle.text = movie.displayTitle
         }
     }

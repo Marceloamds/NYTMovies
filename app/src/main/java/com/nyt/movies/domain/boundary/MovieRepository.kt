@@ -4,6 +4,5 @@ import com.nyt.movies.domain.entity.movie.MoviesList
 
 interface MovieRepository {
 
-    suspend fun getMoviesList(page: Int): MoviesList?
-    suspend fun searchMovies(name: String): MoviesList?
+    suspend fun getMoviesList(page: Int, query: String): MoviesList?
 }

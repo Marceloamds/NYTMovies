@@ -5,17 +5,15 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
-import androidx.appcompat.widget.PopupMenu
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nyt.movies.R
 import com.nyt.movies.databinding.ActivityListMoviesBinding
-import com.nyt.movies.domain.entity.movie.MoviesList
+import com.nyt.movies.domain.entity.movie.Movie
 import com.nyt.movies.presentation.util.base.BaseActivity
 import com.nyt.movies.presentation.util.base.BaseViewModel
 import com.nyt.movies.presentation.util.query.QueryChangesHelper
-import com.nyt.movies.presentation.view.movies.MovieFilterType
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class ListMoviesActivity : BaseActivity() {
@@ -29,7 +27,6 @@ class ListMoviesActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_list_movies)
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.title = getString(R.string.search_for_movie)
         setupRecyclerView()
     }
@@ -37,6 +34,8 @@ class ListMoviesActivity : BaseActivity() {
     override fun subscribeUi() {
         super.subscribeUi()
         _viewModel.moviesList.observe(this, ::onMoviesListReceived)
+        _viewModel.progressVisible.observe(this, { it?.let(adapter::setProgressVisible) })
+        _viewModel.resetList.observe(this, ::onResetList)
         _viewModel.placeholder.observe(this) { binding.placeholderView.setPlaceholder(it) }
     }
 
@@ -54,10 +53,13 @@ class ListMoviesActivity : BaseActivity() {
         }
     }
 
-    private fun onMoviesListReceived(moviesList: MoviesList?) {
-        moviesList?.let {
-            adapter.submitList(moviesList.movies)
-            adapter.setProgressVisible(it.hasMore)
+    private fun onMoviesListReceived(moviesList: List<Movie>?) {
+        moviesList?.let(adapter::submitList)
+    }
+
+    private fun onResetList(shouldReset: Boolean?) {
+        shouldReset?.let {
+            if (it) binding.recyclerViewMovies.smoothScrollToPosition(0)
         }
     }
 
@@ -65,26 +67,21 @@ class ListMoviesActivity : BaseActivity() {
         searchItem?.let {
             val searchView = it.actionView as SearchView
             searchView.setOnQueryTextListener(QueryChangesHelper(_viewModel::onQueryChanged))
-            searchView.setOnSearchClickListener { showQueryPopUpMenu(searchView) }
+            searchView.setOnCloseListener(::onQueryClosed)
         }
     }
 
-    private fun showQueryPopUpMenu(searchView: SearchView) {
-        val popUpMenu = PopupMenu(this, searchView)
-        popUpMenu.setOnMenuItemClickListener {
-            when (it.itemId) {
-                else -> {
-                    false
-                }
-            }
-        }
-        popUpMenu.show()
+    private fun onQueryClosed(): Boolean {
+        _viewModel.onQueryClosed()
+        return true
     }
 
     companion object {
-        const val CURRENCY_EXTRA = "CURRENCY_EXTRA"
 
-        fun createIntent(context: Context) = Intent(context, ListMoviesActivity::class.java)
+        fun createIntent(context: Context) = Intent(context, ListMoviesActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        }
     }
 }
 
