@@ -9,6 +9,7 @@ enum class HttpErrorType {
     CONFLICT,
     UN_PROCESSABLE_ENTITY,
     INTERNAL_SERVER_ERROR,
+    TOO_MANY_REQUESTS,
     UNEXPECTED_ERROR;
 
     companion object {
@@ -22,6 +23,7 @@ enum class HttpErrorType {
                     408 -> TIMEOUT
                     409 -> CONFLICT
                     422 -> UN_PROCESSABLE_ENTITY
+                    429 -> TOO_MANY_REQUESTS
                     500 -> INTERNAL_SERVER_ERROR
                     else -> UNEXPECTED_ERROR
                 }

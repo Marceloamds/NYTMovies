@@ -1,14 +1,16 @@
 package com.nyt.movies.presentation.util.error
 
+import android.content.Context
+import androidx.annotation.StringRes
+import com.nyt.movies.R
 import com.nyt.movies.domain.entity.error.ErrorData
 import com.nyt.movies.domain.entity.error.HttpErrorType
 import com.nyt.movies.domain.entity.error.RequestException
-import com.nyt.movies.domain.util.resource.Strings
 import com.nyt.movies.presentation.util.dialog.DialogData
 import com.nyt.movies.presentation.util.logger.Logger
 
 class ErrorHandler constructor(
-    private val strings: Strings,
+    private val context: Context,
     private val logger: Logger
 ) {
 
@@ -18,8 +20,8 @@ class ErrorHandler constructor(
     ): DialogData {
         val data = getErrorData(throwable, retryAction)
         return data.tryAgainAction?.let {
-            DialogData.error(strings, data.message, strings.globalTryAgain, it)
-        } ?: DialogData.error(strings, data.message, strings.globalOk)
+            DialogData.error(context, data.message, res(R.string.global_try_again), it)
+        } ?: DialogData.error(context, data.message, res(R.string.global_ok))
     }
 
     private fun getErrorData(
@@ -30,7 +32,7 @@ class ErrorHandler constructor(
         return if (throwable is RequestException) {
             handleRequestException(throwable, tryAgainAction)
         } else {
-            ErrorData.UnexpectedErrorData(strings.errorUnknown, tryAgainAction)
+            ErrorData.ServerEndHttpErrorData(res(R.string.error_unknown), tryAgainAction)
         }
     }
 
@@ -40,13 +42,13 @@ class ErrorHandler constructor(
     ): ErrorData {
         return when (exception) {
             is RequestException.TimeoutError ->
-                ErrorData.TimeOutErrorData(strings.errorSocketTimeout, tryAgainAction)
-            is RequestException.NetworkError -> ErrorData.NetworkErrorData(
-                strings.errorNetwork,
+                ErrorData.ServerEndHttpErrorData(res(R.string.error_socket_timeout), tryAgainAction)
+            is RequestException.NetworkError -> ErrorData.ServerEndHttpErrorData(
+                res(R.string.error_network),
                 tryAgainAction
             )
-            is RequestException.UnexpectedError -> ErrorData.UnexpectedErrorData(
-                exception.errorMessage ?: strings.errorUnknown,
+            is RequestException.UnexpectedError -> ErrorData.ServerEndHttpErrorData(
+                exception.errorMessage ?: res(R.string.error_unknown),
                 tryAgainAction
             )
             is RequestException.HttpError -> resolveHttpError(exception, tryAgainAction)
@@ -59,31 +61,34 @@ class ErrorHandler constructor(
     ): ErrorData {
         return when (exception.httpErrorType) {
             HttpErrorType.NOT_FOUND -> ErrorData.ClientEndHttpErrorData(
-                exception.errorMessage ?: strings.errorNotFound
+                exception.errorMessage ?: res(R.string.error_not_found)
             )
-            HttpErrorType.TIMEOUT -> ErrorData.HttpErrorData(
-                strings.errorSocketTimeout,
+            HttpErrorType.TIMEOUT -> ErrorData.ServerEndHttpErrorData(
+                res(R.string.error_socket_timeout),
                 tryAgainAction
             )
-            HttpErrorType.INTERNAL_SERVER_ERROR -> ErrorData.HttpErrorData(
-                strings.errorInternalServer,
+            HttpErrorType.INTERNAL_SERVER_ERROR -> ErrorData.ServerEndHttpErrorData(
+                res(R.string.error_internal_server),
                 tryAgainAction
             )
-            HttpErrorType.UNEXPECTED_ERROR -> ErrorData.HttpErrorData(
-                strings.errorUnexpected,
+            HttpErrorType.UNEXPECTED_ERROR -> ErrorData.ServerEndHttpErrorData(
+                res(R.string.error_unexpected),
                 tryAgainAction
             )
-            HttpErrorType.BAD_REQUEST -> ErrorData.ClientEndHttpErrorData(strings.errorBadRequest)
-            HttpErrorType.CONFLICT -> ErrorData.ClientEndHttpErrorData(strings.errorConflict)
-            HttpErrorType.FORBIDDEN -> ErrorData.ClientEndHttpErrorData(strings.errorForbidden)
-            HttpErrorType.UNAUTHORIZED -> ErrorData.ClientEndHttpErrorData(strings.errorUnauthorized)
-            HttpErrorType.UN_PROCESSABLE_ENTITY -> ErrorData.ClientEndHttpErrorData(strings.errorUnprocessableEntity)
-            else -> ErrorData.HttpErrorData(
+            HttpErrorType.BAD_REQUEST -> ErrorData.ClientEndHttpErrorData(res(R.string.error_bad_request))
+            HttpErrorType.CONFLICT -> ErrorData.ClientEndHttpErrorData(res(R.string.error_conflict))
+            HttpErrorType.FORBIDDEN -> ErrorData.ClientEndHttpErrorData(res(R.string.error_forbidden))
+            HttpErrorType.UNAUTHORIZED -> ErrorData.ClientEndHttpErrorData(res(R.string.error_unauthorized))
+            HttpErrorType.UN_PROCESSABLE_ENTITY -> ErrorData.ClientEndHttpErrorData(res(R.string.error_unprocessable_entity))
+            HttpErrorType.TOO_MANY_REQUESTS -> ErrorData.ClientEndHttpErrorData(res(R.string.error_too_many_requests))
+            else -> ErrorData.ServerEndHttpErrorData(
                 exception.errorMessage
                     ?: exception.message
-                    ?: strings.errorUnknown,
+                    ?: res(R.string.error_unknown),
                 tryAgainAction
             )
         }
     }
+
+    private fun res(@StringRes stringId: Int) = context.getString(stringId)
 }

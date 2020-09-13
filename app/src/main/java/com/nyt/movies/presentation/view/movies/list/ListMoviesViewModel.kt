@@ -1,11 +1,12 @@
 package com.nyt.movies.presentation.view.movies.list
 
+import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
+import com.nyt.movies.R
 import com.nyt.movies.domain.entity.movie.Movie
 import com.nyt.movies.domain.entity.movie.MoviesList
 import com.nyt.movies.domain.interactor.GetMoviesList
-import com.nyt.movies.domain.util.resource.Strings
 import com.nyt.movies.presentation.util.base.BaseViewModel
 import com.nyt.movies.presentation.util.dialog.DialogData
 import com.nyt.movies.presentation.util.extension.adding
@@ -13,16 +14,16 @@ import com.nyt.movies.presentation.view.movies.details.MovieDetailsNavData
 
 class ListMoviesViewModel constructor(
     private val getMoviesList: GetMoviesList,
-    private val strings: Strings
+    private val context: Context
 ) : BaseViewModel() {
 
     val moviesList: LiveData<List<Movie>> get() = _moviesList
     val progressVisible: LiveData<Boolean> get() = _progressVisible
-    val resetList: LiveData<Boolean> get() = _resetList
+    val shareMovie: LiveData<Movie> get() = _shareMovie
 
     private val _moviesList by lazy { MutableLiveData<List<Movie>>() }
     private val _progressVisible by lazy { MutableLiveData<Boolean>() }
-    private val _resetList by lazy { MutableLiveData<Boolean>() }
+    private val _shareMovie by lazy { MutableLiveData<Movie>() }
 
     private var fullMoviesList: List<Movie>? = listOf()
 
@@ -35,18 +36,21 @@ class ListMoviesViewModel constructor(
 
     fun onQueryChanged(query: String) {
         currentQuery = query
-        fullMoviesList = listOf()
-        requestNewMovies()
-    }
-
-    fun onQueryClosed() {
-        currentQuery = ""
+        currentPage = 0
         fullMoviesList = listOf()
         requestNewMovies()
     }
 
     fun onMovieSelected(movie: Movie) {
         goTo(MovieDetailsNavData(movie))
+    }
+
+    fun onLikeClicked(movie: Movie) {
+        // TODO -> Like movie
+    }
+
+    fun onShareClicked(movie: Movie) {
+        _shareMovie.value = movie
     }
 
     fun onProgressItemShown() {
@@ -59,7 +63,6 @@ class ListMoviesViewModel constructor(
             val moviesList = getMoviesList.execute(currentPage, currentQuery)
             fullMoviesList = fullMoviesList?.adding(moviesList?.movies)
             setMoviesList(moviesList)
-            _resetList.value = showPlaceholder
         }
     }
 
@@ -75,10 +78,10 @@ class ListMoviesViewModel constructor(
     private fun showCurrencyListErrorDialog() {
         setDialog(
             DialogData.confirm(
-                strings.errorTitle,
-                strings.currencyListError,
+                context.getString(R.string.error_title),
+                context.getString(R.string.movies_list_error),
                 { /* Do Nothing */ },
-                strings.globalOk,
+                context.getString(R.string.global_ok),
                 true
             )
         )

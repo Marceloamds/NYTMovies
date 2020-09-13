@@ -4,22 +4,29 @@ import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.nyt.movies.R
 import com.nyt.movies.databinding.ItemMovieBinding
 import com.nyt.movies.domain.entity.movie.Movie
 import com.nyt.movies.presentation.util.extension.load
+import com.nyt.movies.presentation.util.extension.setSafeClickListener
 
 class MovieViewHolder(
     private var binding: ItemMovieBinding
 ) : RecyclerView.ViewHolder(binding.root) {
 
-    fun setupBinding(movie: Movie, callback: (Movie) -> Unit) {
+    fun setupBinding(
+        movie: Movie,
+        callback: (Movie) -> Unit,
+        onLikeClickedCallback: (Movie) -> Unit,
+        onShareClickedCallback: (Movie) -> Unit
+    ) {
         with(binding) {
             root.setOnClickListener { callback(movie) }
             imageViewMoviePoster.load(movie.multimedia?.src)
             textViewMovieTitle.text = movie.displayTitle
+            textViewMovieReview.text = movie.summaryShort
+            buttonLike.setSafeClickListener { onLikeClickedCallback(movie) }
+            buttonShare.setSafeClickListener { onShareClickedCallback(movie) }
         }
     }
 

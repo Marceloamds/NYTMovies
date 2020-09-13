@@ -9,7 +9,7 @@ import org.koin.dsl.module
 fun viewModelModule() = module {
 
     viewModel {
-        MovieDetailsViewModel(get())
+        MovieDetailsViewModel()
     }
 
     viewModel {

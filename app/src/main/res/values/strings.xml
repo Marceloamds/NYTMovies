@@ -17,20 +17,19 @@
     <string name="error_unauthorized">Não foi possível completar a operação. É necessário renovar o cadastro</string>
     <string name="error_unexpected">Não foi possível completar a operação. Houve um erro inesperado</string>
     <string name="error_unprocessable_entity">Não foi possível completar a operação. Verifique as informações</string>
+    <string name="error_too_many_requests">Atingimos o limite de requisições. Por favor, tente mais tarde.</string>
     <string name="error_unknown">Não foi possível completar a operação. Tente novamente mais tarde.</string>
     <string name="error_network">Não foi possível completar a operação. Verifique sua conexão e tente novamente.</string>
     <!--List Movies-->
-    <string name="search_for_movie">Search for Movies</string>
+    <string name="search_for_movie">Search for movies</string>
     <string name="action_search">Search</string>
     <string name="action_filter">Filter</string>
     <string name="filter_by_name">Filter by name</string>
     <string name="sort_by_name">Sort by name</string>
+    <string name="send_movie_to">Enviar filme para</string>
     <!--Movie Details-->
     <string name="converted_value_hint">0</string>
-    <string name="empty_fields_error_title">Campos vazios</string>
-    <string name="conversion_error">Houve um erro na conversão. Por favor, tente novamente</string>
-    <string name="current_quotes_error">Houve um erro ao pegar as cotações atuais. Por favor, tente novamente</string>
-    <string name="currency_list_error">Houve um erro ao pegar a lista de moedas. Por favor, tente novamente</string>
+    <string name="movies_list_error">Houve um erro ao pegar a lista de filmes. Por favor, tente novamente</string>
     <string name="synopsis_label">Synopsis</string>
     <string name="review_publication_template">by %s - %s</string>
     <string name="go_to_review">Go to review</string>

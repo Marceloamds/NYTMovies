@@ -1,6 +1,7 @@
 package com.nyt.movies.presentation.util.dialog
 
-import com.nyt.movies.domain.util.resource.Strings
+import android.content.Context
+import com.nyt.movies.R
 
 class DialogData(
     val title: String,
@@ -24,7 +25,7 @@ class DialogData(
         }
 
         fun error(
-            strings: Strings,
+            context: Context,
             message: String,
             confirmButtonText: String? = null,
             onConfirm: (() -> Unit)? = null,
@@ -32,7 +33,7 @@ class DialogData(
             cancelable: Boolean? = true
         ): DialogData {
             return DialogData(
-                strings.errorTitle,
+                context.getString(R.string.error_title),
                 message,
                 confirmButtonText,
                 onConfirm,

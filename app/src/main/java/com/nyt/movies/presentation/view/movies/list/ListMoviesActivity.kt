@@ -35,7 +35,7 @@ class ListMoviesActivity : BaseActivity() {
         super.subscribeUi()
         _viewModel.moviesList.observe(this, ::onMoviesListReceived)
         _viewModel.progressVisible.observe(this, { it?.let(adapter::setProgressVisible) })
-        _viewModel.resetList.observe(this, ::onResetList)
+        _viewModel.shareMovie.observe(this, ::onShareMovie)
         _viewModel.placeholder.observe(this) { binding.placeholderView.setPlaceholder(it) }
     }
 
@@ -46,7 +46,12 @@ class ListMoviesActivity : BaseActivity() {
     }
 
     private fun setupRecyclerView() {
-        adapter = ListMoviesAdapter(_viewModel::onMovieSelected, _viewModel::onProgressItemShown)
+        adapter = ListMoviesAdapter(
+            _viewModel::onMovieSelected,
+            _viewModel::onLikeClicked,
+            _viewModel::onShareClicked,
+            _viewModel::onProgressItemShown
+        )
         with(binding) {
             recyclerViewMovies.layoutManager = LinearLayoutManager(this@ListMoviesActivity)
             recyclerViewMovies.adapter = adapter
@@ -57,10 +62,14 @@ class ListMoviesActivity : BaseActivity() {
         moviesList?.let(adapter::submitList)
     }
 
-    private fun onResetList(shouldReset: Boolean?) {
-        shouldReset?.let {
-            if (it) binding.recyclerViewMovies.smoothScrollToPosition(0)
+    private fun onShareMovie(movie: Movie?) {
+        val shareIntent = Intent()
+        with(shareIntent) {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, "SE LIGA NO FILMASSO! ${movie?.link?.url}")
+            type = "text/plain"
         }
+        startActivity(Intent.createChooser(shareIntent, getString(R.string.send_movie_to)))
     }
 
     private fun setupSearchView(searchItem: MenuItem?) {
@@ -72,7 +81,7 @@ class ListMoviesActivity : BaseActivity() {
     }
 
     private fun onQueryClosed(): Boolean {
-        _viewModel.onQueryClosed()
+        _viewModel.onQueryChanged("")
         return true
     }
 

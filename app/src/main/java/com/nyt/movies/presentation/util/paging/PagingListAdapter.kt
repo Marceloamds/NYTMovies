@@ -4,12 +4,12 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.nyt.movies.domain.entity.movie.Movie
 import com.nyt.movies.presentation.util.extension.adding
 
 abstract class PagingListAdapter<T, ViewHolder : RecyclerView.ViewHolder>(
-    diffUtilCallback: DiffUtil.ItemCallback<T>,
     private val onProgressShownCallback: () -> Unit?
-) : ListAdapter<T, RecyclerView.ViewHolder>(diffUtilCallback) {
+) : RecyclerView.Adapter<RecyclerView.ViewHolder>() {
 
     companion object {
         private const val VIEW_TYPE_PROGRESS = -4
@@ -17,14 +17,14 @@ abstract class PagingListAdapter<T, ViewHolder : RecyclerView.ViewHolder>(
     }
 
     private var progressVisible = false
-    private var currentMoviesList = listOf<T>()
+    var shownList = listOf<T>()
 
     abstract fun onCreateSubViewHolder(parent: ViewGroup, viewType: Int): ViewHolder
 
     abstract fun onBindSubViewHolder(holder: ViewHolder, position: Int)
 
     override fun getItemCount(): Int {
-        return if (progressVisible) super.getItemCount() + 1 else super.getItemCount()
+        return if (progressVisible) shownList.size + 1 else shownList.size
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
@@ -59,5 +59,10 @@ abstract class PagingListAdapter<T, ViewHolder : RecyclerView.ViewHolder>(
         }
     }
 
-    private fun getProgressPosition() = super.getItemCount()
+    fun submitList(list: List<T>?) {
+        shownList = list ?: listOf()
+        notifyDataSetChanged()
+    }
+
+    private fun getProgressPosition() = shownList.size
 }
