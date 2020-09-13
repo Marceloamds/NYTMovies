@@ -5,6 +5,7 @@ import java.util.*
 
 data class Movie(
     val displayTitle: String,
+    val criticsPick: Int,
     val byline: String,
     val headline: String,
     val summaryShort: String,

@@ -33,8 +33,8 @@ class ListMoviesActivity : BaseActivity() {
 
     override fun subscribeUi() {
         super.subscribeUi()
-        _viewModel.moviesList.observe(this, ::onMoviesListReceived)
-        _viewModel.progressVisible.observe(this, { it?.let(adapter::setProgressVisible) })
+        _viewModel.moviesList.observe(this) { it?.let(adapter::submitList) }
+        _viewModel.progressVisible.observe(this) { it?.let(adapter::setProgressVisible) }
         _viewModel.shareMovie.observe(this, ::onShareMovie)
         _viewModel.placeholder.observe(this) { binding.placeholderView.setPlaceholder(it) }
     }
@@ -56,10 +56,6 @@ class ListMoviesActivity : BaseActivity() {
             recyclerViewMovies.layoutManager = LinearLayoutManager(this@ListMoviesActivity)
             recyclerViewMovies.adapter = adapter
         }
-    }
-
-    private fun onMoviesListReceived(moviesList: List<Movie>?) {
-        moviesList?.let(adapter::submitList)
     }
 
     private fun onShareMovie(movie: Movie?) {
@@ -87,10 +83,11 @@ class ListMoviesActivity : BaseActivity() {
 
     companion object {
 
-        fun createIntent(context: Context) = Intent(context, ListMoviesActivity::class.java).apply {
-            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        }
+        fun createIntent(context: Context) =
+            Intent(context, ListMoviesActivity::class.java).apply {
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            }
     }
 }
 

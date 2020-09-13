@@ -13,7 +13,7 @@ fun viewModelModule() = module {
     }
 
     viewModel {
-        ListMoviesViewModel(get(), get())
+        ListMoviesViewModel(get(), get(), get())
     }
 
     viewModel { SplashViewModel() }

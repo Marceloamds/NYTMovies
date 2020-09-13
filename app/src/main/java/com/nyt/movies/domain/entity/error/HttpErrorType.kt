@@ -1,34 +1,18 @@
 package com.nyt.movies.domain.entity.error
 
 enum class HttpErrorType {
-    BAD_REQUEST,
     UNAUTHORIZED,
-    FORBIDDEN,
-    NOT_FOUND,
-    TIMEOUT,
-    CONFLICT,
-    UN_PROCESSABLE_ENTITY,
-    INTERNAL_SERVER_ERROR,
-    TOO_MANY_REQUESTS,
-    UNEXPECTED_ERROR;
+    TOO_MANY_REQUESTS;
 
     companion object {
-        fun getErrorForCode(errorCode: Int?): HttpErrorType {
-            errorCode?.let {
-                return when (it) {
-                    400 -> BAD_REQUEST
+        fun getErrorForCode(errorCode: Int?): HttpErrorType? {
+            return errorCode?.let {
+                when (it) {
                     401 -> UNAUTHORIZED
-                    403 -> FORBIDDEN
-                    404 -> NOT_FOUND
-                    408 -> TIMEOUT
-                    409 -> CONFLICT
-                    422 -> UN_PROCESSABLE_ENTITY
                     429 -> TOO_MANY_REQUESTS
-                    500 -> INTERNAL_SERVER_ERROR
-                    else -> UNEXPECTED_ERROR
+                    else -> null
                 }
             }
-            return UNEXPECTED_ERROR
         }
     }
 }

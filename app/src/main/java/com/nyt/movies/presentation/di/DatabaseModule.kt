@@ -7,7 +7,7 @@ fun databaseModule() = module {
     single { MovieDatabase.build(get()) }
 
     single {
-        val converterDatabase = get() as MovieDatabase
-        converterDatabase.currencyDao()
+        val movieDatabase = get() as MovieDatabase
+        movieDatabase.movieDao()
     }
 }

@@ -20,6 +20,7 @@ data class ApiMovie(
 
     fun toDomainObject() = Movie(
         displayTitle = displayTitle,
+        criticsPick = criticsPick,
         byline = byline,
         headline = headline,
         summaryShort = summaryShort,

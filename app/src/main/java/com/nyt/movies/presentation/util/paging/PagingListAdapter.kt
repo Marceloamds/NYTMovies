@@ -1,11 +1,7 @@
 package com.nyt.movies.presentation.util.paging
 
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.nyt.movies.domain.entity.movie.Movie
-import com.nyt.movies.presentation.util.extension.adding
 
 abstract class PagingListAdapter<T, ViewHolder : RecyclerView.ViewHolder>(
     private val onProgressShownCallback: () -> Unit?
@@ -59,8 +55,8 @@ abstract class PagingListAdapter<T, ViewHolder : RecyclerView.ViewHolder>(
         }
     }
 
-    fun submitList(list: List<T>?) {
-        shownList = list ?: listOf()
+    fun submitList(list: List<T>) {
+        shownList = list
         notifyDataSetChanged()
     }
 

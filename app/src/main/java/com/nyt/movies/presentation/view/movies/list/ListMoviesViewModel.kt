@@ -7,13 +7,14 @@ import com.nyt.movies.R
 import com.nyt.movies.domain.entity.movie.Movie
 import com.nyt.movies.domain.entity.movie.MoviesList
 import com.nyt.movies.domain.interactor.GetMoviesList
+import com.nyt.movies.domain.interactor.LikeMovie
 import com.nyt.movies.presentation.util.base.BaseViewModel
 import com.nyt.movies.presentation.util.dialog.DialogData
-import com.nyt.movies.presentation.util.extension.adding
 import com.nyt.movies.presentation.view.movies.details.MovieDetailsNavData
 
 class ListMoviesViewModel constructor(
     private val getMoviesList: GetMoviesList,
+    private val likeMovie: LikeMovie,
     private val context: Context
 ) : BaseViewModel() {
 
@@ -25,8 +26,6 @@ class ListMoviesViewModel constructor(
     private val _progressVisible by lazy { MutableLiveData<Boolean>() }
     private val _shareMovie by lazy { MutableLiveData<Movie>() }
 
-    private var fullMoviesList: List<Movie>? = listOf()
-
     private var currentPage: Int = 0
     private var currentQuery = ""
 
@@ -37,7 +36,6 @@ class ListMoviesViewModel constructor(
     fun onQueryChanged(query: String) {
         currentQuery = query
         currentPage = 0
-        fullMoviesList = listOf()
         requestNewMovies()
     }
 
@@ -46,7 +44,9 @@ class ListMoviesViewModel constructor(
     }
 
     fun onLikeClicked(movie: Movie) {
-        // TODO -> Like movie
+        launchDataLoad {
+            likeMovie.execute(movie)
+        }
     }
 
     fun onShareClicked(movie: Movie) {
@@ -61,8 +61,8 @@ class ListMoviesViewModel constructor(
     private fun requestNewMovies(showPlaceholder: Boolean = true) {
         launchDataLoad(showPlaceholder, onFailure = ::onFailure) {
             val moviesList = getMoviesList.execute(currentPage, currentQuery)
-            fullMoviesList = fullMoviesList?.adding(moviesList?.movies)
             setMoviesList(moviesList)
+            moviesList?.exception?.let { setDialog(it) { requestNewMovies(showPlaceholder) } }
         }
     }
 
@@ -71,7 +71,7 @@ class ListMoviesViewModel constructor(
             showCurrencyListErrorDialog()
         } else {
             _progressVisible.value = moviesList.hasMore
-            _moviesList.value = fullMoviesList
+            _moviesList.value = moviesList.movies
         }
     }
 

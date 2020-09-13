@@ -8,18 +8,8 @@
     <string name="global_cancel">Cancelar</string>
     <!--Error Strings-->
     <string name="error_title">Oops!</string>
-    <string name="error_socket_timeout">Não foi possível completar a operação. Conexão expirada.</string>
-    <string name="error_not_found">Não foi possível completar a operação. Destino não encontrado</string>
-    <string name="error_internal_server">Não foi possível completar a operação. Houve um erro interno</string>
-    <string name="error_bad_request">Não foi possível completar a operação. A requisição falhou</string>
-    <string name="error_conflict">Não foi possível completar a operação. Houve conflitos nos dados</string>
-    <string name="error_forbidden">Não foi possível completar a operação. Acesso proibido</string>
     <string name="error_unauthorized">Não foi possível completar a operação. É necessário renovar o cadastro</string>
-    <string name="error_unexpected">Não foi possível completar a operação. Houve um erro inesperado</string>
-    <string name="error_unprocessable_entity">Não foi possível completar a operação. Verifique as informações</string>
     <string name="error_too_many_requests">Atingimos o limite de requisições. Por favor, tente mais tarde.</string>
-    <string name="error_unknown">Não foi possível completar a operação. Tente novamente mais tarde.</string>
-    <string name="error_network">Não foi possível completar a operação. Verifique sua conexão e tente novamente.</string>
     <!--List Movies-->
     <string name="search_for_movie">Search for movies</string>
     <string name="action_search">Search</string>

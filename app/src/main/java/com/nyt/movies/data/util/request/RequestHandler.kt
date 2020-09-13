@@ -1,10 +1,7 @@
 package com.nyt.movies.data.util.request
 
-import com.nyt.movies.data.remote.entity.ApiErrors
 import com.nyt.movies.domain.entity.error.RequestException
-import com.google.gson.Gson
 import kotlinx.coroutines.coroutineScope
-import okhttp3.ResponseBody
 import retrofit2.Response
 import java.io.IOException
 import java.net.SocketTimeoutException
@@ -18,30 +15,17 @@ open class RequestHandler {
                     if (isSuccessful) {
                         body()
                     } else {
-                        throw RequestException.HttpError(
-                            code(),
-                            extractErrorBody(errorBody())
-                        )
+                        throw RequestException.HttpError(code())
                     }
                 }
             } catch (t: Exception) {
                 throw when (t) {
                     is RequestException -> t
                     is SocketTimeoutException -> RequestException.TimeoutError()
-                    is UnknownHostException -> RequestException.UnexpectedError(t)
+                    is UnknownHostException -> RequestException.UnexpectedError()
                     is IOException -> RequestException.NetworkError()
-                    else -> RequestException.UnexpectedError(t)
+                    else -> RequestException.UnexpectedError()
                 }
-            }
-        }
-    }
-
-    private fun extractErrorBody(errorBody: ResponseBody? = null): String? {
-        return Gson().fromJson(errorBody?.string(), ApiErrors::class.java).let {
-            if (it.errors != null) {
-                it.errors.joinToString("\n")
-            } else {
-                it.errorMessage
             }
         }
     }

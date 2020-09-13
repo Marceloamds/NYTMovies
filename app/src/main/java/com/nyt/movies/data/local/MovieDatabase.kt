@@ -11,7 +11,7 @@ import com.nyt.movies.data.local.entity.DbMovie
 @Database(entities = [DbMovie::class], version = 1, exportSchema = false)
 abstract class MovieDatabase : RoomDatabase() {
 
-    abstract fun currencyDao(): MovieDao
+    abstract fun movieDao(): MovieDao
 
     companion object {
         fun build(context: Context): MovieDatabase {

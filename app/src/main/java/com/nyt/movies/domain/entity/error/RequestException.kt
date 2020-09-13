@@ -1,16 +1,15 @@
 package com.nyt.movies.domain.entity.error
 
 sealed class RequestException constructor(
-    val errorMessage: String?,
     val httpErrorType: HttpErrorType?
 ) : Exception() {
 
-    class HttpError(errorCode: Int, message: String? = null) :
-        RequestException(message, HttpErrorType.getErrorForCode(errorCode))
+    class HttpError(errorCode: Int) :
+        RequestException(HttpErrorType.getErrorForCode(errorCode))
 
-    class NetworkError : RequestException(null, null)
+    class NetworkError : RequestException(null)
 
-    class TimeoutError : RequestException(null, null)
+    class TimeoutError : RequestException(null)
 
-    class UnexpectedError(throwable: Throwable) : RequestException(throwable.message, null)
+    class UnexpectedError : RequestException(null)
 }

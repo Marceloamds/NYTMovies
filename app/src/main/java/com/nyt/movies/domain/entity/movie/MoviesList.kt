@@ -1,10 +1,12 @@
 package com.nyt.movies.domain.entity.movie
 
 import java.io.Serializable
+import java.lang.Exception
 
 data class MoviesList(
     val status: String,
-    val hasMore: Boolean,
+    var hasMore: Boolean,
     val numResults: Int,
-    val movies: List<Movie>
+    val movies: List<Movie>,
+    var exception: Exception? = null
 ) : Serializable

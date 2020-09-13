@@ -31,13 +31,13 @@ abstract class BaseViewModel : ViewModel(), KoinComponent {
         _placeholder.postValue(placeholder)
     }
 
-    protected fun setDialog(dialogData: DialogData) {
+    protected fun setDialog(dialogData: DialogData?) {
         _dialog.postValue(dialogData)
     }
 
     protected fun setDialog(
         throwable: Throwable,
-        retryAction: (() -> Unit)? = null
+        retryAction: (() -> Unit)
     ) {
         setDialog(errorHandler.getDialogData(throwable, retryAction))
     }
@@ -48,7 +48,7 @@ abstract class BaseViewModel : ViewModel(), KoinComponent {
 
     protected fun launchDataLoad(
         shouldLoad: Boolean = false,
-        onFailure: (Throwable) -> Unit = ::onFailure,
+        onFailure: (Throwable) -> Unit = {},
         block: suspend () -> Unit
     ): Job {
         return viewModelScope.launch {
@@ -61,9 +61,5 @@ abstract class BaseViewModel : ViewModel(), KoinComponent {
                 setPlaceholder(Hide())
             }
         }
-    }
-
-    private fun onFailure(trowable: Throwable) {
-        setDialog(trowable)
     }
 }
