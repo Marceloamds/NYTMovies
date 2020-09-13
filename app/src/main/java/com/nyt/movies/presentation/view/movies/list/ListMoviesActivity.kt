@@ -13,6 +13,7 @@ import com.nyt.movies.databinding.ActivityListMoviesBinding
 import com.nyt.movies.domain.entity.movie.Movie
 import com.nyt.movies.presentation.util.base.BaseActivity
 import com.nyt.movies.presentation.util.base.BaseViewModel
+import com.nyt.movies.presentation.util.constants.INTENT_TEXT_TYPE
 import com.nyt.movies.presentation.util.query.QueryChangesHelper
 import org.koin.android.viewmodel.ext.android.viewModel
 
@@ -27,13 +28,14 @@ class ListMoviesActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_list_movies)
-        supportActionBar?.title = getString(R.string.search_for_movie)
+        supportActionBar?.title = getString(R.string.search_for_reviews)
         setupRecyclerView()
     }
 
     override fun subscribeUi() {
         super.subscribeUi()
         _viewModel.moviesList.observe(this) { it?.let(adapter::submitList) }
+        _viewModel.updateMovie.observe(this) { it?.let(adapter::updateMovie) }
         _viewModel.progressVisible.observe(this) { it?.let(adapter::setProgressVisible) }
         _viewModel.shareMovie.observe(this, ::onShareMovie)
         _viewModel.placeholder.observe(this) { binding.placeholderView.setPlaceholder(it) }
@@ -59,13 +61,12 @@ class ListMoviesActivity : BaseActivity() {
     }
 
     private fun onShareMovie(movie: Movie?) {
-        val shareIntent = Intent()
-        with(shareIntent) {
+        val shareIntent = Intent().apply {
             action = Intent.ACTION_SEND
-            putExtra(Intent.EXTRA_TEXT, "SE LIGA NO FILMASSO! ${movie?.link?.url}")
-            type = "text/plain"
+            putExtra(Intent.EXTRA_TEXT, getString(R.string.share_review_text, movie?.link?.url))
+            type = INTENT_TEXT_TYPE
         }
-        startActivity(Intent.createChooser(shareIntent, getString(R.string.send_movie_to)))
+        startActivity(Intent.createChooser(shareIntent, getString(R.string.send_review_to)))
     }
 
     private fun setupSearchView(searchItem: MenuItem?) {

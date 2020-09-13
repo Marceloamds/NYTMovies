@@ -24,7 +24,8 @@ data class DbMovie(
     @ColumnInfo(name = "multimedia_type") val multimediaType: String?,
     @ColumnInfo(name = "multimedia_src") val multimediaSrc: String?,
     @ColumnInfo(name = "multimedia_width") val multimediaWidth: Double?,
-    @ColumnInfo(name = "multimedia_height") val multimediaHeight: Double?
+    @ColumnInfo(name = "multimedia_height") val multimediaHeight: Double?,
+    @ColumnInfo(name = "is_favorite") val isFavorite: Boolean
 ) {
 
     fun toDomainObject() = Movie(
@@ -36,7 +37,8 @@ data class DbMovie(
         publicationDate = Date(publicationDate),
         openingDate = openingDate?.let { Date(it) },
         link = Link(linkType, linkUrl, suggestedLinkText),
-        multimedia = Multimedia(multimediaType, multimediaSrc, multimediaWidth, multimediaHeight)
+        multimedia = Multimedia(multimediaType, multimediaSrc, multimediaWidth, multimediaHeight),
+        isFavorite = isFavorite
     )
 
     companion object {
@@ -54,7 +56,8 @@ data class DbMovie(
             multimediaType = movie.multimedia?.type,
             multimediaSrc = movie.multimedia?.src,
             multimediaWidth = movie.multimedia?.width,
-            multimediaHeight = movie.multimedia?.height
+            multimediaHeight = movie.multimedia?.height,
+            isFavorite = movie.isFavorite
         )
     }
 }

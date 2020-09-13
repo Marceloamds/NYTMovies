@@ -24,4 +24,9 @@ class ListMoviesAdapter(
             onShareClickedCallback
         )
     }
+
+    fun updateMovie(movie: Movie) {
+        val movieIndex = shownList.indexOfFirst { movie.link.url == it.link.url }
+        notifyItemChanged(movieIndex)
+    }
 }

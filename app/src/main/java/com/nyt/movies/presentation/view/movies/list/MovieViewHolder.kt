@@ -2,6 +2,7 @@ package com.nyt.movies.presentation.view.movies.list
 
 import android.view.LayoutInflater
 import android.view.ViewGroup
+import androidx.core.content.ContextCompat
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.nyt.movies.R
@@ -27,7 +28,17 @@ class MovieViewHolder(
             textViewMovieReview.text = movie.summaryShort
             buttonLike.setSafeClickListener { onLikeClickedCallback(movie) }
             buttonShare.setSafeClickListener { onShareClickedCallback(movie) }
+            setupLike(movie)
         }
+    }
+
+    private fun setupLike(movie: Movie) {
+        binding.buttonLike.setImageDrawable(
+            ContextCompat.getDrawable(
+                binding.root.context,
+                if (movie.isFavorite) R.drawable.ic_favorite else R.drawable.ic_favorite_border
+            )
+        )
     }
 
     companion object {

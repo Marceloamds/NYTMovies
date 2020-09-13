@@ -13,9 +13,7 @@ data class ApiMoviesList(
 
     fun toDomainObject(): MoviesList {
         return MoviesList(
-            status = status,
             hasMore = hasMore,
-            numResults = numResults,
             movies = results.map { it.toDomainObject() }
         )
     }

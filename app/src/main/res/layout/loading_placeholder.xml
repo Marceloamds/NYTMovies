@@ -12,14 +12,6 @@
         <variable
             name="progressVisible"
             type="Boolean" />
-
-        <variable
-            name="messageVisible"
-            type="Boolean" />
-
-        <variable
-            name="buttonVisible"
-            type="Boolean" />
     </data>
 
     <LinearLayout
@@ -40,23 +32,5 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="16dp"
             android:visibility="@{progressVisible ? View.VISIBLE : View.GONE}" />
-
-        <TextView
-            android:id="@+id/message_text_view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textSize="16sp"
-            android:visibility="@{messageVisible ? View.VISIBLE : View.GONE}" />
-
-        <Button
-            android:id="@+id/action_button"
-            style="?android:attr/borderlessButtonStyle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:textAllCaps="true"
-            android:textColor="@color/colorAccent"
-            android:visibility="@{buttonVisible ? View.VISIBLE : View.GONE}" />
     </LinearLayout>
 </layout>

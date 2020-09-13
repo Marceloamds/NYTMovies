@@ -14,23 +14,23 @@ class DefaultMovieRepository constructor(
 ) : MovieRepository {
 
     override suspend fun getMoviesList(page: Int, query: String): MoviesList? {
-        var databaseMoviesList = getMoviesFromDatabase(page, query)
-        if (!databaseMoviesList.hasMore) {
-            databaseMoviesList = updateDatabaseWithApi(page, query)
+        var moviesList = getMoviesFromDatabase(page, query)
+        if (!moviesList.hasMore) {
+            moviesList = updateDatabaseWithApi(page, query)
         }
-        return databaseMoviesList
+        return moviesList
     }
 
     override suspend fun likeMovie(movie: Movie): Movie {
+        movie.isFavorite = !movie.isFavorite
+        movieDao.updateMovie(DbMovie.fromDomainObject(movie))
         return movie
     }
 
     private suspend fun getMoviesFromDatabase(page: Int, query: String): MoviesList {
         val movieList = movieDao.getMovies(page.localPage(), query.containsQuery())
         return MoviesList(
-            "OK",
             movieDao.getMoviesCount(query.containsQuery()) > movieList.size,
-            movieList.size,
             movieList.map { it.toDomainObject() }
         )
     }
@@ -38,22 +38,16 @@ class DefaultMovieRepository constructor(
     private suspend fun updateDatabaseWithApi(page: Int, query: String): MoviesList {
         var hasMoreApiMovies = false
         var apiException: Exception? = null
-        tryCatch({ apiException = it }) {
+        try {
             val apiMoviesList = apiClient.getMoviesList(page.apiPage(), query)?.toDomainObject()
             apiMoviesList?.movies?.let { movieDao.insertMovies(it.map(DbMovie::fromDomainObject)) }
             hasMoreApiMovies = apiMoviesList?.hasMore ?: false
+        } catch (e: Exception) {
+            apiException = e
         }
         return getMoviesFromDatabase(page, query).apply {
             hasMore = hasMoreApiMovies
             exception = apiException
-        }
-    }
-
-    private suspend fun tryCatch(exceptionHandler: (Exception) -> Unit, block: suspend () -> Unit) {
-        try {
-            block()
-        } catch (e: Exception) {
-            exceptionHandler(e)
         }
     }
 

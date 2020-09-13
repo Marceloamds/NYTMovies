@@ -1,16 +1,9 @@
 package com.nyt.movies.presentation.util.extension
 
-import com.nyt.movies.presentation.util.constants.DAY_MONTH_YEAR
 import java.text.SimpleDateFormat
 import java.util.*
 
-fun <T> List<T>.adding(elements: List<T>?): List<T> {
-    val mutableList = toMutableList()
-    elements?.let { mutableList.addAll(elements) }
-    return mutableList.toList()
-}
-
-fun Date.format(pattern: String =  DAY_MONTH_YEAR): String {
+fun Date.format(pattern: String = DAY_MONTH_YEAR): String {
     return getSimpleDateFormatter(pattern).format(this)
 }
 
@@ -22,3 +15,5 @@ fun getSimpleDateFormatter(
         it.timeZone = timeZone
     }
 }
+
+private const val DAY_MONTH_YEAR = "dd/MM/yyyy"

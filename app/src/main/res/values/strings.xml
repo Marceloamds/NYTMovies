@@ -11,12 +11,13 @@
     <string name="error_unauthorized">Não foi possível completar a operação. É necessário renovar o cadastro</string>
     <string name="error_too_many_requests">Atingimos o limite de requisições. Por favor, tente mais tarde.</string>
     <!--List Movies-->
-    <string name="search_for_movie">Search for movies</string>
+    <string name="search_for_reviews">Search for reviews</string>
     <string name="action_search">Search</string>
     <string name="action_filter">Filter</string>
     <string name="filter_by_name">Filter by name</string>
     <string name="sort_by_name">Sort by name</string>
-    <string name="send_movie_to">Enviar filme para</string>
+    <string name="send_review_to">Send review to</string>
+    <string name="share_review_text">Check out this awesome review! \n %s</string>
     <!--Movie Details-->
     <string name="converted_value_hint">0</string>
     <string name="movies_list_error">Houve um erro ao pegar a lista de filmes. Por favor, tente novamente</string>

@@ -3,13 +3,11 @@ package com.nyt.movies.presentation.view.movies.list
 import android.content.Context
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.nyt.movies.R
 import com.nyt.movies.domain.entity.movie.Movie
 import com.nyt.movies.domain.entity.movie.MoviesList
 import com.nyt.movies.domain.interactor.GetMoviesList
 import com.nyt.movies.domain.interactor.LikeMovie
 import com.nyt.movies.presentation.util.base.BaseViewModel
-import com.nyt.movies.presentation.util.dialog.DialogData
 import com.nyt.movies.presentation.view.movies.details.MovieDetailsNavData
 
 class ListMoviesViewModel constructor(
@@ -19,10 +17,12 @@ class ListMoviesViewModel constructor(
 ) : BaseViewModel() {
 
     val moviesList: LiveData<List<Movie>> get() = _moviesList
+    val updateMovie: LiveData<Movie> get() = _updateMovie
     val progressVisible: LiveData<Boolean> get() = _progressVisible
     val shareMovie: LiveData<Movie> get() = _shareMovie
 
     private val _moviesList by lazy { MutableLiveData<List<Movie>>() }
+    private val _updateMovie by lazy { MutableLiveData<Movie>() }
     private val _progressVisible by lazy { MutableLiveData<Boolean>() }
     private val _shareMovie by lazy { MutableLiveData<Movie>() }
 
@@ -45,7 +45,7 @@ class ListMoviesViewModel constructor(
 
     fun onLikeClicked(movie: Movie) {
         launchDataLoad {
-            likeMovie.execute(movie)
+            _updateMovie.value = likeMovie.execute(movie)
         }
     }
 
@@ -67,24 +67,8 @@ class ListMoviesViewModel constructor(
     }
 
     private fun setMoviesList(moviesList: MoviesList?) {
-        if (moviesList?.status != "OK") {
-            showCurrencyListErrorDialog()
-        } else {
-            _progressVisible.value = moviesList.hasMore
-            _moviesList.value = moviesList.movies
-        }
-    }
-
-    private fun showCurrencyListErrorDialog() {
-        setDialog(
-            DialogData.confirm(
-                context.getString(R.string.error_title),
-                context.getString(R.string.movies_list_error),
-                { /* Do Nothing */ },
-                context.getString(R.string.global_ok),
-                true
-            )
-        )
+        _progressVisible.value = moviesList?.hasMore
+        _moviesList.value = moviesList?.movies
     }
 
     private fun onFailure(throwable: Throwable) {

@@ -4,8 +4,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import androidx.databinding.DataBindingUtil
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.RequestOptions
 import com.nyt.movies.R
 import com.nyt.movies.databinding.ActivityMoviesDetailsBinding
 import com.nyt.movies.domain.entity.movie.Movie
@@ -28,12 +26,12 @@ class MovieDetailsActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         binding = DataBindingUtil.setContentView(this, R.layout.activity_movies_details)
-        setupImage()
         setupUi()
     }
 
     private fun setupUi() {
         with(binding) {
+            imageViewMoviePoster.load(movie.multimedia?.src)
             textViewMovieTitle.text = movie.displayTitle
             textViewSynopsis.text = movie.summaryShort
             textViewReviewTitle.text = movie.headline
@@ -43,13 +41,9 @@ class MovieDetailsActivity : BaseActivity() {
                 movie.publicationDate.format()
             )
             textViewOpeningDate.text = movie.openingDate?.format()
-            buttonGoToReview.setOnClickListener { movie.link.url?.let { openBrowser(it) } }
+            buttonGoToReview.setOnClickListener { openBrowser(movie.link.url) }
             buttonGoBack.setOnClickListener { finish() }
         }
-    }
-
-    private fun setupImage(){
-        binding.imageViewMoviePoster.load(movie.multimedia?.src)
     }
 
     companion object {

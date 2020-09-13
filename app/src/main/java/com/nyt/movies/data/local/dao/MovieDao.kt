@@ -1,9 +1,6 @@
 package com.nyt.movies.data.local.dao
 
-import androidx.room.Dao
-import androidx.room.Insert
-import androidx.room.OnConflictStrategy
-import androidx.room.Query
+import androidx.room.*
 import com.nyt.movies.data.local.entity.DbMovie
 
 @Dao
@@ -11,6 +8,9 @@ interface MovieDao {
 
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertMovies(movies: List<DbMovie>)
+
+    @Update
+    suspend fun updateMovie(movie: DbMovie)
 
     @Query("SELECT * FROM movie WHERE display_title LIKE :query OR summary_short LIKE :query ORDER BY publication_date DESC LIMIT :limit")
     suspend fun getMovies(limit: Int, query: String): List<DbMovie>
