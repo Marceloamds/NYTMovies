@@ -10,8 +10,9 @@ import android.net.Uri
 import android.webkit.URLUtil
 import com.nyt.movies.R
 import com.nyt.movies.domain.entity.movie.Movie
-import com.nyt.movies.presentation.util.constants.INTENT_TEXT_TYPE
 import com.nyt.movies.presentation.util.dialog.DialogData
+
+private const val INTENT_TEXT_TYPE = "text/plain"
 
 fun Context.showDialog(dialogData: DialogData): Dialog {
     val builder = AlertDialog.Builder(this)

@@ -13,6 +13,7 @@ abstract class PagingListAdapter<T, ViewHolder : RecyclerView.ViewHolder>(
     }
 
     private var progressVisible = false
+    private val progressPosition get() = shownList.size
     var shownList = mutableListOf<T>()
 
     abstract fun onCreateSubViewHolder(parent: ViewGroup, viewType: Int): ViewHolder
@@ -31,7 +32,7 @@ abstract class PagingListAdapter<T, ViewHolder : RecyclerView.ViewHolder>(
     }
 
     override fun getItemViewType(position: Int): Int {
-        if (progressVisible && position == getProgressPosition()) return VIEW_TYPE_PROGRESS
+        if (progressVisible && position == progressPosition) return VIEW_TYPE_PROGRESS
         return getProgressSubItemViewType(position)
     }
 
@@ -47,11 +48,11 @@ abstract class PagingListAdapter<T, ViewHolder : RecyclerView.ViewHolder>(
 
     fun setProgressVisible(visible: Boolean) {
         if (progressVisible == visible) {
-            if (visible) notifyItemChanged(getProgressPosition())
+            if (visible) notifyItemChanged(progressPosition)
         } else {
             progressVisible = visible
-            if (visible) notifyItemInserted(getProgressPosition())
-            else notifyItemRemoved(getProgressPosition())
+            if (visible) notifyItemInserted(progressPosition)
+            else notifyItemRemoved(progressPosition)
         }
     }
 
@@ -59,6 +60,4 @@ abstract class PagingListAdapter<T, ViewHolder : RecyclerView.ViewHolder>(
         shownList = list.toMutableList()
         notifyDataSetChanged()
     }
-
-    private fun getProgressPosition() = shownList.size
 }

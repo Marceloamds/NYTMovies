@@ -15,9 +15,7 @@ class DefaultMovieRepository constructor(
 
     override suspend fun getMoviesList(page: Int, query: String): MoviesList? {
         var moviesList = getMoviesFromDatabase(page, query)
-        if (!moviesList.hasMore) {
-            moviesList = updateDatabaseWithApi(page, query)
-        }
+        if (!moviesList.hasMore) { moviesList = updateDatabaseWithApi(page, query) }
         return moviesList
     }
 

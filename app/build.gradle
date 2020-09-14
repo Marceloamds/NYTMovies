@@ -6,9 +6,8 @@ apply plugin: 'kotlin-android-extensions'
 android {
     compileSdkVersion 29
     buildToolsVersion "29.0.3"
-
-    dataBinding {
-        enabled = true
+    buildFeatures {
+        dataBinding = true
     }
 
     defaultConfig {
@@ -20,7 +19,6 @@ android {
         buildConfigField "String", "API_ENDPOINT", "\"https://api.nytimes.com/svc/movies/v2/\""
         buildConfigField "String", "ACCESS_KEY", "\"fi28RPxpKuzySt2ZxN4NH1MBb8oRDNWy\""
         buildConfigField "String", "DATABASE_NAME", "\"app-nyt-movies\""
-        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
 
     buildTypes {
@@ -63,7 +61,6 @@ dependencies {
     implementation "org.koin:koin-android:$koinVersion"
     implementation "org.koin:koin-android-scope:$koinVersion"
     implementation "org.koin:koin-android-viewmodel:$koinVersion"
-    implementation 'androidx.swiperefreshlayout:swiperefreshlayout:1.1.0'
 
     // Room
     kapt "androidx.room:room-compiler:$roomVersion"

@@ -3,6 +3,8 @@ package com.nyt.movies.presentation.util.extension
 import java.text.SimpleDateFormat
 import java.util.*
 
+private const val DAY_MONTH_YEAR = "dd/MM/yyyy"
+
 fun Date.format(pattern: String = DAY_MONTH_YEAR): String {
     return getSimpleDateFormatter(pattern).format(this)
 }
@@ -15,5 +17,3 @@ fun getSimpleDateFormatter(
         it.timeZone = timeZone
     }
 }
-
-private const val DAY_MONTH_YEAR = "dd/MM/yyyy"
