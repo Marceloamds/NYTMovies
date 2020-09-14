@@ -64,8 +64,10 @@ class MovieDetailsActivity : BaseActivity() {
     }
 
     private fun onMovieChanged(movie: Movie) {
-        this.movie = movie
-        setupLike()
+        if (this.movie?.link?.url == movie.link.url) {
+            this.movie = movie
+            setupLike()
+        }
     }
 
     private fun setupLike() {

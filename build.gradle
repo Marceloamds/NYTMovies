@@ -3,7 +3,7 @@
 buildscript {
 
     ext {
-        kotlinVersion = '1.4.0'
+        kotlinVersion = '1.4.10'
         retrofitVersion = '2.9.0'
         koinVersion = '2.0.1'
         roomVersion = '2.2.5'

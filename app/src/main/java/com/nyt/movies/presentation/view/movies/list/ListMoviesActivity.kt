@@ -13,6 +13,7 @@ import com.nyt.movies.R
 import com.nyt.movies.databinding.ActivityListMoviesBinding
 import com.nyt.movies.presentation.util.base.BaseActivity
 import com.nyt.movies.presentation.util.base.BaseViewModel
+import com.nyt.movies.presentation.util.extension.setSafeClickListener
 import com.nyt.movies.presentation.util.extension.shareMovie
 import com.nyt.movies.presentation.util.query.QueryChangesHelper
 import com.nyt.movies.presentation.view.movies.OnMovieChangedObservable
@@ -31,6 +32,7 @@ class ListMoviesActivity : BaseActivity() {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_list_movies)
         supportActionBar?.title = getString(R.string.search_for_reviews)
         setupRecyclerView()
+        setupUi()
     }
 
     override fun subscribeUi() {
@@ -71,10 +73,12 @@ class ListMoviesActivity : BaseActivity() {
             _viewModel::onShareClicked,
             _viewModel::onProgressItemShown
         )
-        with(binding) {
-            recyclerViewMovies.layoutManager = LinearLayoutManager(this@ListMoviesActivity)
-            recyclerViewMovies.adapter = adapter
-        }
+        binding.recyclerViewMovies.layoutManager = LinearLayoutManager(this@ListMoviesActivity)
+        binding.recyclerViewMovies.adapter = adapter
+    }
+
+    private fun setupUi() {
+        binding.buttonTryAgain.setSafeClickListener { _viewModel.getAllMovies() }
     }
 
     private fun setupSearchView(searchItem: MenuItem?) {

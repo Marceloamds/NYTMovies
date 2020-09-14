@@ -13,7 +13,7 @@ abstract class PagingListAdapter<T, ViewHolder : RecyclerView.ViewHolder>(
     }
 
     private var progressVisible = false
-    var shownList = listOf<T>()
+    var shownList = mutableListOf<T>()
 
     abstract fun onCreateSubViewHolder(parent: ViewGroup, viewType: Int): ViewHolder
 
@@ -56,7 +56,7 @@ abstract class PagingListAdapter<T, ViewHolder : RecyclerView.ViewHolder>(
     }
 
     fun submitList(list: List<T>) {
-        shownList = list
+        shownList = list.toMutableList()
         notifyDataSetChanged()
     }
 

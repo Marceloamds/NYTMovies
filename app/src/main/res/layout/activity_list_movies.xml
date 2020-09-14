@@ -28,13 +28,14 @@
                 android:layout_height="wrap_content"
                 android:src="@drawable/ic_empty_list"
                 android:layout_marginHorizontal="64dp"
-                app:layout_constraintVertical_bias="0.3"
+                app:layout_constraintVertical_bias="0.2"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView
+                android:id="@+id/text_view_empty_message"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:textColor="@color/colorPrimary"
@@ -47,6 +48,21 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"/>
 
+            <Button
+                android:id="@+id/button_try_again"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="0dp"
+                android:layout_height="48dp"
+                android:layout_margin="48dp"
+                android:alpha="0.8"
+                android:background="@drawable/button_background"
+                android:text="@string/global_try_again"
+                android:textAllCaps="false"
+                android:textColor="@color/colorWhite"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/text_view_empty_message" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
         <com.nyt.movies.presentation.util.placeholder.PlaceholderView

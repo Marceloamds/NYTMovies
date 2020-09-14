@@ -27,6 +27,7 @@ class ListMoviesAdapter(
 
     fun updateMovie(movie: Movie) {
         val movieIndex = shownList.indexOfFirst { movie.link.url == it.link.url }
+        shownList[movieIndex] = movie
         notifyItemChanged(movieIndex)
     }
 }
