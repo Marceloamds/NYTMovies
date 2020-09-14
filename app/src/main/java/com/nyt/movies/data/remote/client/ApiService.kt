@@ -8,7 +8,7 @@ import retrofit2.http.Query
 interface ApiService {
 
     @GET("reviews/search.json")
-    suspend fun getCurrencyList(
+    suspend fun getMoviesList(
         @Query("offset") offset: Int,
         @Query("query") query: String
     ): Response<ApiMoviesList>

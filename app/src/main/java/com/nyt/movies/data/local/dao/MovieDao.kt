@@ -15,6 +15,12 @@ interface MovieDao {
     @Query("SELECT * FROM movie WHERE display_title LIKE :query OR summary_short LIKE :query ORDER BY publication_date DESC LIMIT :limit")
     suspend fun getMovies(limit: Int, query: String): List<DbMovie>
 
+    @Query("SELECT * FROM movie WHERE is_favorite = 1 ORDER BY publication_date DESC LIMIT :limit")
+    suspend fun getFavoriteMovies(limit: Int): List<DbMovie>
+
+    @Query("SELECT COUNT(*) FROM movie WHERE is_favorite = 1")
+    suspend fun getFavoriteMoviesCount(): Int
+
     @Query("SELECT COUNT(*) FROM movie WHERE display_title LIKE :query OR summary_short LIKE :query")
     suspend fun getMoviesCount(query: String): Int
 }

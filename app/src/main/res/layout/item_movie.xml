@@ -29,7 +29,7 @@
                 app:layout_constraintGuide_percent="0.5" />
 
             <ImageView
-                android:id="@+id/button_like"
+                android:id="@+id/button_favorite"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:padding="8dp"

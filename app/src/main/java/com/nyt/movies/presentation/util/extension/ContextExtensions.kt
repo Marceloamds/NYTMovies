@@ -1,5 +1,6 @@
 package com.nyt.movies.presentation.util.extension
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
@@ -8,6 +9,8 @@ import android.content.Intent
 import android.net.Uri
 import android.webkit.URLUtil
 import com.nyt.movies.R
+import com.nyt.movies.domain.entity.movie.Movie
+import com.nyt.movies.presentation.util.constants.INTENT_TEXT_TYPE
 import com.nyt.movies.presentation.util.dialog.DialogData
 
 fun Context.showDialog(dialogData: DialogData): Dialog {
@@ -50,6 +53,18 @@ fun Context.openBrowser(url: String) {
             "http://$this"
         }
     }
-    val browserIntent = Intent(Intent.ACTION_VIEW, Uri.parse(formattedUrl)).apply { addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) }
+    val browserIntent = Intent(
+        Intent.ACTION_VIEW,
+        Uri.parse(formattedUrl)
+    ).apply { addFlags(Intent.FLAG_ACTIVITY_NEW_TASK) }
     startActivity(browserIntent)
+}
+
+fun Activity.shareMovie(movie: Movie) {
+    val shareIntent = Intent().apply {
+        action = Intent.ACTION_SEND
+        putExtra(Intent.EXTRA_TEXT, getString(R.string.share_review_text, movie.link.url))
+        type = INTENT_TEXT_TYPE
+    }
+    startActivity(Intent.createChooser(shareIntent, getString(R.string.send_review_to)))
 }

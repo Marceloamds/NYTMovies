@@ -27,6 +27,14 @@ class DefaultMovieRepository constructor(
         return movie
     }
 
+    override suspend fun getFavoriteMoviesList(page: Int): MoviesList? {
+        val movieList = movieDao.getFavoriteMovies(page.localPage())
+        return MoviesList(
+            movieDao.getFavoriteMoviesCount() > movieList.size,
+            movieList.map { it.toDomainObject() }
+        )
+    }
+
     private suspend fun getMoviesFromDatabase(page: Int, query: String): MoviesList {
         val movieList = movieDao.getMovies(page.localPage(), query.containsQuery())
         return MoviesList(

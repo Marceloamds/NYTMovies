@@ -26,14 +26,14 @@ class MovieViewHolder(
             imageViewMoviePoster.load(movie.multimedia?.src)
             textViewMovieTitle.text = movie.displayTitle
             textViewMovieReview.text = movie.summaryShort
-            buttonLike.setSafeClickListener { onLikeClickedCallback(movie) }
+            buttonFavorite.setSafeClickListener { onLikeClickedCallback(movie) }
             buttonShare.setSafeClickListener { onShareClickedCallback(movie) }
             setupLike(movie)
         }
     }
 
     private fun setupLike(movie: Movie) {
-        binding.buttonLike.setImageDrawable(
+        binding.buttonFavorite.setImageDrawable(
             ContextCompat.getDrawable(
                 binding.root.context,
                 if (movie.isFavorite) R.drawable.ic_favorite else R.drawable.ic_favorite_border

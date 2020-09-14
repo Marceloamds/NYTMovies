@@ -8,6 +8,6 @@ class ApiClient constructor(
 ) : RequestHandler() {
 
     suspend fun getMoviesList(offset: Int, query: String): ApiMoviesList? {
-        return makeRequest(apiService.getCurrencyList(offset, query))
+        return makeRequest(apiService.getMoviesList(offset, query))
     }
 }

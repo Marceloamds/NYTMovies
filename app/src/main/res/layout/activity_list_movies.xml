@@ -15,6 +15,40 @@
             tools:itemCount="50"
             tools:listitem="@layout/item_movie" />
 
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/empty_list_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:background="@color/colorWhite">
+
+            <ImageView
+                android:id="@+id/image_view_empty_list"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_empty_list"
+                android:layout_marginHorizontal="64dp"
+                app:layout_constraintVertical_bias="0.3"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:textColor="@color/colorPrimary"
+                android:textStyle="bold"
+                android:layout_marginHorizontal="64dp"
+                android:layout_marginTop="16dp"
+                android:textAlignment="center"
+                android:text="@string/empty_list_helper_text"
+                app:layout_constraintTop_toBottomOf="@id/image_view_empty_list"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
         <com.nyt.movies.presentation.util.placeholder.PlaceholderView
             android:id="@+id/placeholder_view"
             android:layout_width="match_parent"

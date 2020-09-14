@@ -5,16 +5,17 @@ import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
+import android.view.View
 import androidx.appcompat.widget.SearchView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.nyt.movies.R
 import com.nyt.movies.databinding.ActivityListMoviesBinding
-import com.nyt.movies.domain.entity.movie.Movie
 import com.nyt.movies.presentation.util.base.BaseActivity
 import com.nyt.movies.presentation.util.base.BaseViewModel
-import com.nyt.movies.presentation.util.constants.INTENT_TEXT_TYPE
+import com.nyt.movies.presentation.util.extension.shareMovie
 import com.nyt.movies.presentation.util.query.QueryChangesHelper
+import com.nyt.movies.presentation.view.movies.OnMovieChangedObservable
 import org.koin.android.viewmodel.ext.android.viewModel
 
 class ListMoviesActivity : BaseActivity() {
@@ -35,10 +36,11 @@ class ListMoviesActivity : BaseActivity() {
     override fun subscribeUi() {
         super.subscribeUi()
         _viewModel.moviesList.observe(this) { it?.let(adapter::submitList) }
-        _viewModel.updateMovie.observe(this) { it?.let(adapter::updateMovie) }
         _viewModel.progressVisible.observe(this) { it?.let(adapter::setProgressVisible) }
-        _viewModel.shareMovie.observe(this, ::onShareMovie)
         _viewModel.placeholder.observe(this) { binding.placeholderView.setPlaceholder(it) }
+        _viewModel.showEmptyPlaceholder.observe(this, ::onEmptyPlaceholder)
+        _viewModel.shareMovie.observe(this, ::shareMovie)
+        OnMovieChangedObservable.updatedMovie.observe(this) { it?.let(adapter::updateMovie) }
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -46,6 +48,21 @@ class ListMoviesActivity : BaseActivity() {
         setupSearchView(menu?.findItem(R.id.action_search))
         return super.onCreateOptionsMenu(menu)
     }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        return when (item.itemId) {
+            R.id.filter_favorite -> {
+                _viewModel.onFavoriteMoviesClicked()
+                true
+            }
+            R.id.all_movies -> {
+                _viewModel.getAllMovies()
+                true
+            }
+            else -> super.onOptionsItemSelected(item)
+        }
+    }
+
 
     private fun setupRecyclerView() {
         adapter = ListMoviesAdapter(
@@ -60,15 +77,6 @@ class ListMoviesActivity : BaseActivity() {
         }
     }
 
-    private fun onShareMovie(movie: Movie?) {
-        val shareIntent = Intent().apply {
-            action = Intent.ACTION_SEND
-            putExtra(Intent.EXTRA_TEXT, getString(R.string.share_review_text, movie?.link?.url))
-            type = INTENT_TEXT_TYPE
-        }
-        startActivity(Intent.createChooser(shareIntent, getString(R.string.send_review_to)))
-    }
-
     private fun setupSearchView(searchItem: MenuItem?) {
         searchItem?.let {
             val searchView = it.actionView as SearchView
@@ -80,6 +88,11 @@ class ListMoviesActivity : BaseActivity() {
     private fun onQueryClosed(): Boolean {
         _viewModel.onQueryChanged("")
         return true
+    }
+
+    private fun onEmptyPlaceholder(showEmptyPlaceholder: Boolean?) {
+        binding.emptyListLayout.visibility =
+            if (showEmptyPlaceholder == true) View.VISIBLE else View.GONE
     }
 
     companion object {
