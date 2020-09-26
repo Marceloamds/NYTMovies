@@ -17,7 +17,8 @@ class MovieDetailsViewModel(
     fun onLikeClicked(movie: Movie?) {
         movie?.let {
             launchDataLoad {
-                OnMovieChangedObservable.updateMovie(likeMovie.execute(movie))
+                it.isFavorite = !it.isFavorite
+                OnMovieChangedObservable.updateMovie(likeMovie.execute(it))
             }
         }
     }

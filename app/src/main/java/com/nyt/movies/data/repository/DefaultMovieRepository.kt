@@ -20,7 +20,6 @@ class DefaultMovieRepository constructor(
     }
 
     override suspend fun likeMovie(movie: Movie): Movie {
-        movie.isFavorite = !movie.isFavorite
         movieDao.updateMovie(DbMovie.fromDomainObject(movie))
         return movie
     }

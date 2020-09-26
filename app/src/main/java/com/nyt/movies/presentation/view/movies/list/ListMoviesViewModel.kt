@@ -8,7 +8,6 @@ import com.nyt.movies.domain.interactor.GetFavoriteMoviesList
 import com.nyt.movies.domain.interactor.GetMoviesList
 import com.nyt.movies.domain.interactor.LikeMovie
 import com.nyt.movies.presentation.util.base.BaseViewModel
-import com.nyt.movies.presentation.view.movies.OnMovieChangedObservable
 import com.nyt.movies.presentation.view.movies.details.MovieDetailsNavData
 
 class ListMoviesViewModel constructor(
@@ -46,7 +45,7 @@ class ListMoviesViewModel constructor(
 
     fun onLikeClicked(movie: Movie) {
         launchDataLoad {
-            OnMovieChangedObservable.updateMovie(likeMovie.execute(movie))
+            likeMovie.execute(movie)
         }
     }
 

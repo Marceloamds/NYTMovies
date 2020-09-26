@@ -6,12 +6,12 @@ import android.view.Window
 import android.view.WindowManager
 import android.widget.ImageView
 import com.bumptech.glide.Glide
+import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.request.RequestOptions
 import com.nyt.movies.R
 import com.nyt.movies.presentation.util.click.SafeClickListener
 
-fun View.setSafeClickListener(callback: () -> Unit) {
-    val intervalInMillis = 1000
+fun View.setSafeClickListener(intervalInMillis: Int = 1000, callback: () -> Unit) {
     SafeClickListener(callback, intervalInMillis).apply {
         setOnClickListener(this::onClick)
     }
@@ -39,7 +39,6 @@ fun setWindowFlag(bits: Int, on: Boolean, window: Window) {
 fun ImageView.load(url: String?) {
     val requestOptions = RequestOptions().apply {
         placeholder(R.drawable.placeholder)
-        centerCrop()
     }
     Glide.with(this).load(url).apply(requestOptions).into(this)
 }
