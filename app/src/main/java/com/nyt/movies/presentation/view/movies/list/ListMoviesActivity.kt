@@ -17,7 +17,7 @@ import com.nyt.movies.presentation.util.extension.setSafeClickListener
 import com.nyt.movies.presentation.util.extension.shareMovie
 import com.nyt.movies.presentation.util.query.QueryChangesHelper
 import com.nyt.movies.presentation.view.movies.OnMovieChangedObservable
-import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class ListMoviesActivity : BaseActivity() {
 

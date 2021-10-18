@@ -12,8 +12,8 @@ import com.nyt.movies.presentation.util.placeholder.types.Hide
 import com.nyt.movies.presentation.util.placeholder.types.Loading
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
-import org.koin.core.KoinComponent
-import org.koin.core.inject
+import org.koin.core.component.KoinComponent
+import org.koin.core.component.inject
 
 abstract class BaseViewModel : ViewModel(), KoinComponent {
 
